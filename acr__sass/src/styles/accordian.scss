@@ -1,0 +1,70 @@
+.accordianSummary {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.controlContent {
+	width: 100%;
+	&--detail {
+		p {
+			font-size: 16px;
+			font-weight: 600;
+		}
+	}
+	&--types {
+		padding-top: 20px;
+		.impGroup,
+		.baseLine {
+			border: 1px solid rgb(189, 189, 189);
+			//width: fit-content;
+			padding: 5px 10px;
+			border-radius: 5px;
+			p:nth-child(1) {
+				font-weight: 600;
+				font-size: 16px;
+			}
+			p:nth-child(2) {
+				margin-top: 4px;
+			}
+		}
+		@media screen and (max-width: 480px) {
+			grid-template-columns: repeat(1, 1fr);
+		}
+		&__policy {
+			.selectOptions {
+				background-color: #fff;
+			}
+			.MuiFormControl-root {
+				width: 100%;
+			}
+		}
+	}
+	.MuiFormControl-root {
+		width: 100%;
+	}
+	&--saveButton {
+		text-align: center;
+		margin: 20px 0 0 0;
+		button {
+			// height: 40px;
+			// width: 80px;
+			padding: 10px 30px;
+			border-radius: 6px;
+		}
+	}
+}
+
+//NextButton
+
+.buttonNext {
+	@extend .controlContent--saveButton;
+	padding-bottom: 20px;
+	button {
+		padding: 10px 30px;
+		//background-color: #152736;
+		border-radius: 6px;
+		//color: #fff;
+		//box-shadow: 0 0 8px #213d55;
+	}
+}

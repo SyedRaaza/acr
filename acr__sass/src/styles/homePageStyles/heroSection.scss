@@ -1,0 +1,40 @@
+.heroSection {
+	padding: 0 6rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	height: calc(100vh - 10rem);
+	align-items: center;
+	justify-items: center;
+	&--left {
+		padding-right: 12rem;
+		text-transform: uppercase;
+		p:not(:first-child) {
+			margin-top: 2rem;
+		}
+		p:nth-child(1) {
+			//color: #ff4f5a;
+			font-size: 6rem;
+			font-weight: 900;
+			line-height: 1;
+		}
+		p:nth-child(2) {
+			//color: #1a2e35;
+			font-size: 2rem;
+			font-weight: 700;
+		}
+		p:nth-child(3) {
+			//color: darkgray;
+			font-size: 1.6rem;
+		}
+		p {
+			color: #164177;
+		}
+	}
+	&--right {
+		&__image {
+			img {
+				color: yellow;
+			}
+		}
+	}
+}

@@ -1,0 +1,78 @@
+.stepForm {
+	width: 50%;
+	padding: 2rem 8rem;
+	background-color: #fff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 0.6rem;
+	overflow: hidden;
+	position: relative;
+	p {
+		font-size: 1.8rem;
+		font-weight: 700;
+	}
+	@media screen and (max-width: 480px) {
+		padding: 2rem 1rem;
+		width: 85%;
+	}
+	.react-tag-input {
+		margin: 2px 0 2px 0px;
+	}
+}
+
+.formStepOne {
+	p {
+		margin-top: 3rem;
+		margin-bottom: 1rem;
+	}
+}
+
+.formStepTwo {
+	.invitesHeader {
+		p {
+			font-size: 1.8rem;
+			margin-bottom: 0;
+		}
+	}
+}
+
+.form-group {
+	.MuiFormControl-root {
+		width: 100%;
+	}
+}
+.nxtPrv {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.finishBtn {
+	color: inherit !important;
+	&:hover {
+		text-decoration: none !important;
+	}
+}
+.registerModal {
+	@extend .stepForm;
+	text-align: center;
+	p {
+		font-weight: 800;
+		padding: 2rem 0;
+	}
+
+	&--Button {
+		text-align: center;
+		button {
+			background-color: #0e1b26;
+			box-shadow: 0 0 8px rgb(2, 16, 59);
+			padding: 1.5rem;
+			border-radius: 0.6rem;
+			color: #fff;
+			text-align: center;
+		}
+	}
+}
