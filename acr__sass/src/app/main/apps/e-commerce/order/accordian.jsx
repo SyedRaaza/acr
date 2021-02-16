@@ -81,7 +81,7 @@ const AccordionComponent = ({cisData}) => {
 console.log(cisData.sub_controls);
   return (
     <div className={classes.root}>
-      <AccordianChild />
+      {/* <AccordianChild /> */}
         {/* <button onClick={reduce}>Reduce</button> */}
         {cisData.sub_controls.map((val , key) => (
           <Accordion onClick={(e) => {console.log("acc")}} key={key} expanded={expanded === val.id} onChange={handleChange(val.id)}>

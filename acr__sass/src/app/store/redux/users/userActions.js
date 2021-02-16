@@ -54,7 +54,7 @@ export const getUsers = () => {
         })
         .catch(err => {
             const errorMsg = err
-            alert(err)
+            //alert(err)
             dispatch(getUsersFailure(errorMsg))
         })
     }

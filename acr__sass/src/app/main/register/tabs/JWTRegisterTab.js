@@ -9,6 +9,7 @@ import { submitRegister } from 'app/auth/store/registerSlice';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {connect} from 'react-redux';
+import {Link} from "react-router-dom";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -45,8 +46,19 @@ function JWTRegisterTab({userData}) {
 	const [modalStyle] = React.useState(getModalStyle);
 	const [open, setOpen] = React.useState(false);
 	const [length , setLength] = useState(4);
+	const [isFormValid, setIsFormValid] = useState(false);
+	const [email , setEmail] = useState("");
+	const [businessEmail , setBusinessEmail] = useState("");
+	const [domainErr , setDomainErr] = useState(6)
+
+
+	const dispatch = useDispatch();
+	const register = useSelector(({ auth }) => auth.register);
+	const formRef = useRef(null);
+
+	var firstDomain = email;
+	var secondDomain = businessEmail;
 	
-console.log(length);
 	const handleOpen = () => {
 		setOpen(true);
 	};
@@ -55,15 +67,6 @@ console.log(length);
 		setOpen(false);
 	};
 
-
-
-	const dispatch = useDispatch();
-	const register = useSelector(({ auth }) => auth.register);
-
-	const [isFormValid, setIsFormValid] = useState(false);
-	const[email1 , setEmail1] = useState();
-	const[email2 , setEmail2] = useState("");
-	const formRef = useRef(null);
 
 	useEffect(() => {
 		if (register.error && (register.error.username || register.error.password || register.error.email)) {
@@ -86,14 +89,57 @@ console.log(length);
 
 	function handleSubmit(model) {
 		dispatch(submitRegister(model));
-		console.log(model)
-		console.log(userData)
+		//console.log(model)
+		//console.log(userData)
 		handleOpen();
 	}
 
 	const handlePersonalEmail = (model) => {
-		console.log(model)
+		setEmail(model.email)
+		setBusinessEmail(model.business_email)
+		//console.log(model)
+		//console.log(firstDomain , secondDomain)
+		// setEmail(model.email);
+		// setBusinessEmail(model.business_email)
+			if(firstDomain == undefined) {
+			//console.log(email , businessEmail)
+		}
+		else if (firstDomain && secondDomain != undefined) {
+			let subDomOne = firstDomain.split("@");
+			let subDomTwo = secondDomain.split("@")
+			//console.log(subDomOne[1] , subDomTwo[1]);
+			if(subDomOne[1] == subDomTwo[1]) {
+				setDomainErr(6)
+			}
+			else {
+				setDomainErr(100)
+			}
+		}
 	}
+
+
+	const isSubDomainSame = (model) => {
+
+		// if(email || businessEmail == undefined) {
+		// 	//console.log(email , businessEmail)
+		// }
+		// else {
+		// 	let subDomOne = model.email.split("@");
+		// 	let subDomTwo = model.business_email.split("@")
+
+		// 	//console.log(subDomOne , subDomTwo);
+		// }
+		//console.log(model)
+
+	};
+
+	useEffect(() => {
+		//console.log(email)
+		//console.log(businessEmail)
+		//console.log(firstDomain , secondDomain)
+
+		isSubDomainSame()
+	},[email , businessEmail])
 
 	return (
 		<React.Fragment>
@@ -159,10 +205,15 @@ console.log(length);
 								type="text"
 								name="email"
 								label="Email"
-								validations="isEmail"
-								onChange={handlePersonalEmail}
+								onChange={() => {setDomainErr(6)}}
+								validations={{
+									isEmail: true,
+									minLength: domainErr
+								}}
+								//onChange={handlePersonalEmail}
 								validationErrors={{
-									isEmail: 'Please enter a valid email'
+									isEmail: 'Please enter a valid email',
+									minLength: 'Email & Business email after @ should match'
 								}}
 								InputProps={{
 									endAdornment: (
@@ -207,10 +258,14 @@ console.log(length);
 								type="text"
 								name="business_email"
 								label="Business Email"
-								validations="isEmail"
-								onChange={handlePersonalEmail}
+								validations={{
+									isEmail: true,
+									minLength: domainErr
+								}}
+								onChange={() => {setDomainErr(6)}}
 								validationErrors={{
-									isEmail: 'Please enter a valid email'
+									isEmail: 'Please enter a valid email',
+									minLength: 'Email & Business email after @ should match'
 								}}
 								InputProps={{
 									endAdornment: (
@@ -238,6 +293,7 @@ console.log(length);
 									minLength: 'Minimum length is 4'
 								}}
 								InputProps={{
+									//onKeyUp: () => {handlePersonalEmail()},
 									endAdornment: (
 										<InputAdornment position="end">
 											<Icon className="text-20" color="action">
@@ -292,7 +348,9 @@ console.log(length);
 							<div className="registerModal">
 								<p>Welcome to ACR!<br />Please Login to proceed further.</p>
 								<div className="registerModal--Button">
-									<button onClick={(e) => {window.location.reload()}}>Login</button>
+									<Link to="/login">
+										<button >Login</button>
+									</Link>
 								</div>
 							</div>
 						</Modal>
@@ -303,7 +361,7 @@ console.log(length);
 }
 
 const mapStateToProps = state => {
-  console.log(state)
+  //console.log(state)
     return {
         userData: state.auth,
         //cisData: state.cisReducer,
@@ -311,7 +369,7 @@ const mapStateToProps = state => {
 }
 
 // const mapDispatchToProps = dispatch => {
-//     console.log(dispatch)
+//     //console.log(dispatch)
 //     return {
 //         getUsers: () => dispatch(getUsers()),
 //         reduce: () => dispatch(reduceCake()),

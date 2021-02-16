@@ -32,7 +32,7 @@ function JWTLoginTab({loginData}) {
 	useEffect(() => {
 		console.log(JSON.stringify(loginData.user.data.data))
 		setSubDomain(loginData.user.data.data)
-	});
+	},[]);
 
 	console.log(subDomain);
 	//console.log(subDomain[0]);
@@ -62,6 +62,8 @@ console.log(subDom);
 		dispatch(submitLogin(model));
 		console.log(model)
 	}
+
+	const hiddenTag = "hidden"
 
 	return (
 		<div className="w-full">

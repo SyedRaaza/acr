@@ -142,7 +142,7 @@ export function mainThemeVariations(theme) {
 			palette: {
 				type: 'dark',
 				background: {
-					paper: '#1E2125',
+					paper: '#fff',
 					default: '#121212'
 				}
 			}

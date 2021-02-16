@@ -9,9 +9,15 @@
 	border-radius: 0.6rem;
 	overflow: hidden;
 	position: relative;
+	max-height: 70%;
+	overflow-y: scroll;
 	p {
 		font-size: 1.8rem;
 		font-weight: 700;
+	}
+	@media screen and (max-width: 992px) {
+		padding: 2rem 4rem;
+		width: 85%;
 	}
 	@media screen and (max-width: 480px) {
 		padding: 2rem 1rem;
@@ -30,6 +36,9 @@
 }
 
 .formStepTwo {
+	p {
+		font-size: 1.2rem;
+	}
 	.invitesHeader {
 		p {
 			font-size: 1.8rem;
@@ -37,7 +46,11 @@
 		}
 	}
 }
-
+.formStepThree {
+	p {
+		font-size: 1.2rem;
+	}
+}
 .form-group {
 	.MuiFormControl-root {
 		width: 100%;

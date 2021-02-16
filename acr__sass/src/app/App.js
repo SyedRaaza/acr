@@ -29,7 +29,7 @@ const jss = create({
 const generateClassName = createGenerateClassName();
 
 const App = () => {
-	const [view , setView] = useState(true);
+	const [view , setView] = useState(false);
 	const handleView = () => {
 		setView(false)
 	}
