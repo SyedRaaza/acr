@@ -14,6 +14,7 @@ import {
 import FuseSettingsConfig from 'app/fuse-configs/settingsConfig';
 import FuseThemesConfig from 'app/fuse-configs/themesConfig';
 import FuseLayoutConfigs from 'app/fuse-layouts/FuseLayoutConfigs';
+import { lightBlue, red } from '@material-ui/core/colors';
 
 function getInitialSettings() {
 	const defaultLayoutStyle =
@@ -130,6 +131,7 @@ const settingsSlice = createSlice({
 			};
 		},
 		setDefaultSettings: (state, action) => {
+			//console.log(JSON.stringify(state.themes.JonSnow) + "from setting Slice 1")
 			const defaults = generateSettings(state.defaults, action.payload);
 			const themes =
 				defaults.theme.main !== state.defaults.theme.main
@@ -142,6 +144,28 @@ const settingsSlice = createSlice({
 				themes
 			};
 		},
+
+		setNewSettings: (state , action) => {
+			//console.l(JSON.stringify(initialThemes) + "from setting")
+			const defaults = generateSettings(state.defaults, action.payload);
+			const themes =
+				defaults.theme.main !== state.defaults.theme.main
+					? { ...state.themes, ...mainThemeVariations(themesObjRaw[defaults.theme.main]) }
+					: state.themes;
+			return {
+				...state,
+				defaults: _.merge({}, defaults),
+				current: _.merge({}, defaults),
+				themes,
+				themes: {
+					...state.themes,
+					TenantTheme: 
+						action.payload.customizeTheme
+					
+				},
+			}
+		},
+
 		setInitialSettings: (state, action) => {
 			return _.merge({}, initialState);
 		},
@@ -160,6 +184,6 @@ const settingsSlice = createSlice({
 	}
 });
 
-export const { resetSettings, setDefaultSettings, setInitialSettings, setSettings } = settingsSlice.actions;
+export const { resetSettings, setDefaultSettings, setInitialSettings, setSettings ,setNewSettings } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

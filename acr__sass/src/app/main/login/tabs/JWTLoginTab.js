@@ -3,22 +3,91 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Typography from '@material-ui/core/Typography';
 import Formsy from 'formsy-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { submitLogin } from 'app/auth/store/loginSlice';
-import { Link } from 'react-router-dom';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import {changeBaseURL} from "app/services/backendAPI/APIConfigs";
+import {Link} from 'react-router-dom';
+import { setUser } from '../../../store/redux/index';
+import history from '@history';
+import {getToken} from "app/services/backendAPI/APIConfigs";
+import { setNewSettings } from 'app/store/fuse/settingsSlice';
+import { lightBlue, red } from '@material-ui/core/colors';
 
-function JWTLoginTab({loginData}) {
+const useStyles = makeStyles((theme) => ({
+	button: {
+	  display: 'block',
+	  marginTop: theme.spacing(2),
+	},
+  }));
+
+  const showPasswordFieldError = () => {
+	  return (
+		  <span>Length should be 4</span>
+	  )
+  }
+  const handlePersonalEmail = (model) => {
+	console.log(model)
+}
+
+
+function JWTLoginTab({loginData , newUser}) {
 	const dispatch = useDispatch();
+	const classes = useStyles();
+	const [org, setOrg] = React.useState('');
+	const [open, setOpen] = React.useState(false);
+    const [postId, setPostId] = useState(null);
 	const login = useSelector(({ auth }) => auth.login);
-
 	const [isFormValid, setIsFormValid] = useState(false);
+	const [isEmail, setEmail] = useState(null);
+	const [posts, setPosts] = useState([]);
 	const [showPassword, setShowPassword] = useState(false);
-	const [subDomain , setSubDomain] = useState({});
-
+	const [subDomain , setSubDomain] = useState([]);
+	const [isView, setView] = useState(null);
 	const formRef = useRef(null);
+	const [showData, setshowData]=useState(false);
+	const [length , setLength] = useState(4);
+	const [passwordError , setPasswordError] = useState("Length should be 4");
+	const settings = useSelector(({ fuse }) => fuse.settings.current);
+	const userTheme = useSelector(state => state.newUserReducer.user)
+
+	const newuserDataOne = newUser.error;
+
+	const showSelectOrg = ()=>{
+		if (isView) {
+			setView(false);
+		} else {
+			setView(true);
+		}
+		
+	}
+
+
+
+const Emaildata = data => {
+	return new Promise((resolve , reject) => {
+		axios.post('http://pligence-acr.com/tenant/domain/' , 
+		{"email":data},
+		{
+			headers: {
+				"content-type":"application/json"
+			}
+		}
+		)
+		.then(response => { 
+			setPosts(response.data.data)
+		})
+		.catch(error => {
+			console.log(error.response)
+		});
+	})
+};
+
 
 	useEffect(() => {
 		if (login.error && (login.error.email || login.error.password)) {
@@ -30,26 +99,27 @@ function JWTLoginTab({loginData}) {
 	}, [login.error]);
 
 	useEffect(() => {
-		console.log(JSON.stringify(loginData.user.data.data))
 		setSubDomain(loginData.user.data.data)
 	},[]);
-
-	console.log(subDomain);
-	//console.log(subDomain[0]);
-	var subDom = "";
+	
 	useEffect(() => {
 		if ( subDomain === undefined) {
 			console.log(undefined)
 		}
 		else {
-			console.log(subDomain[0]);
 			setSubDomain(subDomain[0]);
-			setSubDomain(subDomain.sub_domain);
-			console.log(subDomain.sub_domain);
-			subDom = subDomain;
 		};
-	})
-console.log(subDom);
+	},[])
+  
+	const handleChange = (event) => {
+	  setOrg(event.target.value);
+	};
+  
+	const showBaseURL = (URL) => {
+		changeBaseURL(URL);
+		///dispatch(setUser(model))
+	}
+
 	function disableButton() {
 		setIsFormValid(false);
 	}
@@ -57,13 +127,71 @@ console.log(subDom);
 	function enableButton() {
 		setIsFormValid(true);
 	}
-
+   
 	function handleSubmit(model) {
-		dispatch(submitLogin(model));
-		console.log(model)
+		dispatch(setUser(model))
 	}
 
-	const hiddenTag = "hidden"
+
+	var customizeTheme = {
+		palette: {
+			type: 'light',
+			primary: {
+				light: '#b3d1d1',
+				main: '#006565',
+				dark: '#003737'
+			},
+			secondary: {
+				light: '#ffecc0',
+				main: '#FFBE2C',
+				dark: '#ff9910',
+				contrastText: '#272727'
+			},
+			background: {
+				paper: '#FFFFFF',
+				default: '#F0F7F7'
+			},
+			error: red
+		},
+		status: {
+			danger: 'green'
+		}
+	}
+
+
+	useEffect(() => {
+		if(newuserDataOne == true) {
+			setLength(100)
+			setPasswordError(true)
+		}
+		else if (newuserDataOne == false) {
+			getToken(newUser.data)
+			customizeTheme = newUser.data[0].organization_data.color_schemes
+			//alert(JSON.stringify(customizeTheme))
+		}
+	},[newuserDataOne , customizeTheme])
+	
+
+	const handleChanges = event => {
+		const value=event.target.value;
+		setEmail(value)
+	   	Emaildata(value);
+	}
+
+
+	function handleSchemeSelect(themeId) {
+		const newSettings = {
+			...settings,
+			theme: {
+				main: themeId,
+				navbar: themeId,
+				toolbar: themeId,
+				footer: themeId
+			},
+            customizeTheme
+		};
+		dispatch(setNewSettings(newSettings));
+	}
 
 	return (
 		<div className="w-full">
@@ -79,16 +207,19 @@ console.log(subDom);
 					type="text"
 					name="email"
 					label="Username/Email"
-					value="admin"
 					validations={{
-						minLength: 4
+						minLength:length,
+						isEmail,
 					}}
+					onChange={() => {handlePersonalEmail() ; setLength(4)}}
+					onBlur= {(e)=>{handleChanges(e)}}
 					validationErrors={{
-						minLength: 'Min character length is 4'
+						isEmail: 'Please enter a valid email',
+						minLength: 'Email is Incorrect'
 					}}
 					InputProps={{
 						endAdornment: (
-							<InputAdornment position="end">
+							<InputAdornment position="end" >
 								<Icon className="text-20" color="action">
 									email
 								</Icon>
@@ -98,18 +229,19 @@ console.log(subDom);
 					variant="outlined"
 					required
 				/>
-
 				<TextFieldFormsy
 					className="mb-16"
 					type="password"
 					name="password"
 					label="Password"
 					value="admin"
+					onChange={() => {setLength(4) ; setPasswordError(false)}}
+					onClick={() => showSelectOrg()}
 					validations={{
-						minLength: 4
+						minLength: length,
 					}}
 					validationErrors={{
-						minLength: 'Min character length is 4'
+						minLength: length > 4 ? "Password is incorrect" : "Length should be 4",
 					}}
 					InputProps={{
 						className: 'pr-2',
@@ -127,8 +259,25 @@ console.log(subDom);
 					variant="outlined"
 					required
 				/>
-
-				<Button
+					<FormControl variant="outlined" >
+						<InputLabel htmlFor="outlined-age-native-simple">Organization</InputLabel>
+						<Select
+						//native
+						value={org}
+						onChange={handleChange}
+						label="Organization"
+						inputProps={{
+							name: 'policy',
+							id: 'policy-controlled',
+						}}
+						>
+						{posts.map((val , key) => (
+							<option onClick={() => {showBaseURL(val.base_url)}} key={key} className="selectOptions" value={val.base_url}>{val.organization_name}</option>
+						))}
+						
+						</Select>
+					</FormControl>
+	  			<Button
 					type="submit"
 					variant="contained"
 					color="primary"
@@ -143,56 +292,6 @@ console.log(subDom);
 					Login
 				</Button>
 			</Formsy>
-
-			<table className="text-center w-full mt-32">
-				<thead>
-					<tr>
-						<th>
-							<Typography className="font-600" color="textSecondary">
-								Role
-							</Typography>
-						</th>
-						<th>
-							<Typography className="font-600" color="textSecondary">
-								Username
-							</Typography>
-						</th>
-						<th>
-							<Typography className="font-600" color="textSecondary">
-								Password
-							</Typography>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<Typography className="font-600" color="textSecondary">
-								Admin
-							</Typography>
-						</td>
-						<td>
-							<Typography>admin</Typography>
-						</td>
-						<td>
-							<Typography>admin</Typography>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<Typography className="font-600" color="textSecondary">
-								Staff
-							</Typography>
-						</td>
-						<td>
-							<Typography>staff</Typography>
-						</td>
-						<td>
-							<Typography>staff</Typography>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</div>
 	);
 }
@@ -201,7 +300,7 @@ const mapStateToProps = state => {
 console.log(state)
 	return {
 		loginData: state.auth,
-		//cisData: state.cisReducer,
+		newUser: state.newUserReducer.user
 	}
 }
 

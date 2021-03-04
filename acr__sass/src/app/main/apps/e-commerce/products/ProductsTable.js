@@ -16,8 +16,16 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import { getProducts, selectProducts } from '../store/productsSlice';
 import ProductsTableHead from './ProductsTableHead';
+import {connect} from "react-redux";
+import {getCisMaturityData} from "../../../../store/redux/index";
+import {masterData} from "../order/accordian";
+import { set } from 'date-fns';
+import history from '@history';
+import { provideShowAssessment } from "../../../../store/redux/index";
+import {useTheme} from "@material-ui/core/styles";
 
 function ProductsTable(props) {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const products = useSelector(selectProducts);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
@@ -31,10 +39,20 @@ function ProductsTable(props) {
 		direction: 'asc',
 		id: null
 	});
+	const {assessmentData} = props;
+	useEffect(() => {
+		dispatch(getProducts());
+	}, [dispatch]);
 
 	useEffect(() => {
-		dispatch(getProducts()).then(() => setLoading(false));
-	}, [dispatch]);
+		//dispatch(getCisMaturityData());
+		if(assessmentData.loading == true) {
+			setLoading(true)
+		}
+		else if(assessmentData.loading == false) {
+			setLoading(false)
+		}
+	},[assessmentData.loading])
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
@@ -104,12 +122,12 @@ function ProductsTable(props) {
 		return <FuseLoading />;
 	}
 
-	if (data.length === 0) {
+	if (assessmentData.cisMatturityData === []) {
 		return (
 			<FuseAnimate delay={100}>
 				<div className="flex flex-1 items-center justify-center h-full">
 					<Typography color="textSecondary" variant="h5">
-						There are no products!
+						There are no Assesments!
 					</Typography>
 				</div>
 			</FuseAnimate>
@@ -130,100 +148,43 @@ function ProductsTable(props) {
 					/>
 
 					<TableBody>
-						{_.orderBy(
-							data,
-							[
-								o => {
-									switch (order.id) {
-										case 'categories': {
-											return o.categories[0];
-										}
-										default: {
-											return o[order.id];
-										}
-									}
-								}
-							],
-							[order.direction]
-						)
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
+						{assessmentData.cisMaturityData.data.data.map((val , key) => (							
 									<TableRow
 										className="h-64 cursor-pointer"
 										hover
 										role="checkbox"
-										aria-checked={isSelected}
+										//aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
+										key={key}
+										//selected={isSelected}
+										//onClick={event => handleClick(val)}
+										onClick={() => {history.push('/apps/assessment') ; dispatch(provideShowAssessment(val))}}
+										
 									>
-										<TableCell className="w-40 md:w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell>
-
-										<TableCell
-											className="w-52 px-4 md:px-0"
-											component="th"
-											scope="row"
-											padding="none"
-										>
-											{n.images.length > 0 && n.featuredImageId ? (
-												<img
-													className="w-full block rounded"
-													src={_.find(n.images, { id: n.featuredImageId }).url}
-													alt={n.name}
-												/>
-											) : (
-												<img
-													className="w-full block rounded"
-													src="assets/images/ecommerce/product-image-placeholder.png"
-													alt={n.name}
-												/>
-											)}
-										</TableCell>
-
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.name}
+											{val.name}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-											{n.categories.join(', ')}
+											{val.departments.map((val , key) => (
+												<span style={{backgroundColor: theme.palette.primary.dark , color: "#fff" , borderRadius: ".4rem"}} key={key} className="p-2 m-4">{val}</span>
+											))}
+											
 										</TableCell>
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											<span>$</span>
-											{n.priceTaxIncl}
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+											{val.owner_id}
 										</TableCell>
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+											{val.period_to}
 										</TableCell>
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-												<Icon className="text-red text-20">remove_circle</Icon>
-											)}
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+											{val.period_from}
 										</TableCell>
 									</TableRow>
-								);
-							})}
+								))}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>
@@ -247,4 +208,11 @@ function ProductsTable(props) {
 	);
 }
 
-export default withRouter(ProductsTable);
+
+const mapStateToProps = state => {
+	return {
+		assessmentData: state.cisMaturityDataReducer
+	}
+}
+
+export default connect(mapStateToProps)(withRouter(ProductsTable));

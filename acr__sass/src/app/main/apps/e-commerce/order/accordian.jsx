@@ -6,14 +6,19 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {getUsers , reduceCake , getCisData} from '../../../../store/redux/index';
-import {connect} from 'react-redux';
+import {connect , useSelector , useDispatch} from 'react-redux';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 import AccordianChild from './accordianChild';
+import userServices from "../../../../services/backendAPI/userServices";
+import Widget7 from "app/main/apps/dashboards/analytics/widgets/Widget7";
+import { selectWidgetsEntities, getWidgets } from 'app/main/apps/dashboards/analytics/store/widgetsSlice';
+import _ from '@lodash';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,23 +40,22 @@ export const masterData = {};
 
 const AccordionComponent = ({cisData}) => {
 
+
+
   const [loading , setLoading] = useState(false)
   const [checked, setChecked] = useState({});
   const [expanded, setExpanded] = useState(false);
   const [masterFormData , setMasterFormData] = useState([])
+  const [checkboxState , setCheckBoxState] = useState(false)
   
   const [select, setSelect] = useState({
-    policy: '',
-    implemented: '',
-    automated: '',
-    report: ''
+    pd_status: '',
+    ci_status: '',
+    ca_status: '',
+    cr_status: '',
+    is_applicable: true,
+    sub_control_id: 0
   });
-
-
-
-    useEffect(() => {
-        console.log("Mounted")
-    },[])
 
   const classes = useStyles();
   const checkVal = 3;
@@ -60,11 +64,14 @@ const AccordionComponent = ({cisData}) => {
     setExpanded(isExpanded ? panel : false);
     console.log(masterData)
   };
+
   const handleChangeCheckBox = (event) => {
     setChecked(event.target.checked);
   };
+
   const handleChangeSelect = (event) => {
     console.log(select)
+    
     const name = event.target.name;
     setSelect({
       ...select,
@@ -78,13 +85,31 @@ const AccordionComponent = ({cisData}) => {
     //console.log(style)
   }
 
-console.log(cisData.sub_controls);
+  const handleCheckboxState = newState => {
+    setCheckBoxState(newState)
+  }
+
+  const makeAssesment = () => {
+    axios.patch('/maturity/assessment/',select)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err + "from Patch")
+    })
+    //updateStore()
+  }
+
+  // if (_.isEmpty(widgets)) {
+	// 	return null;
+	// }
+
+console.log(cisData);
   return (
     <div className={classes.root}>
-      {/* <AccordianChild /> */}
         {/* <button onClick={reduce}>Reduce</button> */}
         {cisData.sub_controls.map((val , key) => (
-          <Accordion onClick={(e) => {console.log("acc")}} key={key} expanded={expanded === val.id} onChange={handleChange(val.id)}>
+          <Accordion style={{ margin: "0.4rem 0 0.4rem 0" }} key={key} expanded={expanded === val.id} onChange={handleChange(val.id)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
@@ -92,12 +117,12 @@ console.log(cisData.sub_controls);
             className=""
           >
             <div className="accordianSummary">
-            <p>{val.id}</p>
             <p>{val.display_id}</p>
-            <FormControlLabel control={<Checkbox color="secondary" onClick={() => console.log(key)} name="checkedC" />} label="Applicable" />
+            <p className="w-3/4 wrap">{val.details}</p>
+            <FormControlLabel control={<Checkbox color="secondary" onChange={handleChangeSelect} id={key} name="is_applicable" value={true} />} label="Applicable" />
             </div>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails className="block">
             <div className="controlContent">
             
               <div className="controlContent--detail">
@@ -117,11 +142,11 @@ console.log(cisData.sub_controls);
                     <InputLabel htmlFor="outlined-age-native-simple">Policy Defined</InputLabel>
                     <Select
                       native
-                      value={select.policy}
+                      value={select.pd_status}
                       onChange={handleChangeSelect}
                       label="Policy Defined"
                       inputProps={{
-                        name: 'policy',
+                        name: 'pd_status',
                         id: 'policy-controlled',
                       }}
                     >
@@ -141,7 +166,7 @@ console.log(cisData.sub_controls);
                         onChange={handleChangeSelect}
                         label="Control Implemented"
                         inputProps={{
-                          name: 'implemented',
+                          name: 'ci_status',
                           id: 'control-implemented',
                         }}
                       >
@@ -160,7 +185,7 @@ console.log(cisData.sub_controls);
                       onChange={handleChangeSelect}
                       label="Control Automated"
                       inputProps={{
-                        name: 'automated',
+                        name: 'ca_status',
                         id: 'control-automated',
                       }}
                     >
@@ -180,7 +205,7 @@ console.log(cisData.sub_controls);
                       onChange={handleChangeSelect}
                       label="Control Report to Bussiness"
                       inputProps={{
-                        name: 'report',
+                        name: 'cr_status',
                         id: 'control-report',
                       }}
                     >
@@ -198,7 +223,7 @@ console.log(cisData.sub_controls);
                 className="whitespace-nowrap"
                 variant="contained"
                 color="secondary"
-                onClick={() => {masterData[val.display_id]=select ; console.log(masterData)}}
+                onClick={() => {masterData[val.display_id]=select ; console.log(masterData); select["sub_control_id"]=val.id; makeAssesment() }}
               >
                 <span>Save</span>
               </Button>
@@ -208,36 +233,9 @@ console.log(cisData.sub_controls);
           </AccordionDetails>
         </Accordion>
         ))}
-        		<div className="buttonNext">
-              <Button
-                to=""
-                className="whitespace-nowrap"
-                variant="contained"
-                color="secondary"
-                onClick={() => console.log(masterData)}
-              >
-                <span className="sm:flex">Submit</span>
-              </Button>
-            </div>
     </div>
   );
 }
 
-// const mapStateToProps = state => {
-//   console.log(state)
-//     return {
-//         userData: state.userReducer,
-//         //cisData: state.cisReducer,
-//     }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//     console.log(dispatch)
-//     return {
-//         getUsers: () => dispatch(getUsers()),
-//         reduce: () => dispatch(reduceCake()),
-//         getCis: () => dispatch(getCisData())
-//     }
-// }
 
 export default  (React.memo(AccordionComponent));

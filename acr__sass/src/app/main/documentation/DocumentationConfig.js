@@ -12,7 +12,7 @@ import ConfigurationDocRoutes from './configuration/ConfigurationDocRoutes';
 const DocumentationConfig = {
 	routes: [
 		{
-			path: '/documentation',
+			path: '/apps/settings',
 			component: React.lazy(() => import('./DocumentationPageLayout')),
 			routes: [
 				{
@@ -28,7 +28,7 @@ const DocumentationConfig = {
 				...MaterialUIComponentsRoutes,
 				...ThirdPartyComponentsRoutes,
 				{
-					path: '/documentation',
+					path: '/apps/settings',
 					component: () => <Redirect to="/documentation/getting-started/introduction" />
 				}
 			]

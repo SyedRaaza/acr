@@ -68,12 +68,12 @@ function FuseSettings(props) {
 		if (event.target.name === 'layout.style' && event.target.value !== settings.layout.style) {
 			newSettings.layout.config = {};
 		}
-
-		if (user.role === 'guest') {
-			dispatch(setDefaultSettings(newSettings));
-		} else {
-			dispatch(updateUserSettings(newSettings));
-		}
+		dispatch(setDefaultSettings(newSettings));
+		// if (user.role === 'guest') {
+		// 	dispatch(setDefaultSettings(newSettings));
+		// } else {
+		// 	dispatch(updateUserSettings(newSettings));
+		// }
 	}
 
 	const ThemeSelect = ({ value, name, handleThemeChange }) => {

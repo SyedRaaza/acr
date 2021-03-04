@@ -10,7 +10,7 @@ function Widget9(props) {
 	return (
 		<Card className="w-full rounded-8 shadow">
 			<div className="p-16 px-4 flex flex-row items-center justify-between">
-				<Typography className="h1 px-12">Top campaigns</Typography>
+				<Typography className="h1 px-12">Change logs</Typography>
 
 				<div>
 					<IconButton aria-label="more">
@@ -23,18 +23,33 @@ function Widget9(props) {
 				<thead>
 					<tr>
 						<th aria-label="title" />
-						<th className="text-right">Clicks</th>
-						<th className="text-right">Conv</th>
+						<th className="text-left">User</th>
+						<th className="text-left">Date</th>
 					</tr>
 				</thead>
 				<tbody>
-					{props.data.rows.map(row => (
+					<tr>
+					<td className="text-left">Added new assesment</td>
+					<td className="text-left">John Doe</td>
+					<td className="text-left">28-06-2020</td>
+					</tr>
+					<tr>
+					<td className="text-left">Added new assesment</td>
+					<td className="text-left">John Doe</td>
+					<td className="text-left">28-06-2020</td>
+					</tr>
+					<tr>
+					<td className="text-left">Added new assesment</td>
+					<td className="text-left">John Doe</td>
+					<td className="text-left">28-06-2020</td>
+					</tr>
+					{/* {props.data.rows.map(row => (
 						<tr key={row.title}>
 							<td>{row.title}</td>
-							<td className="text-right">{row.clicks}</td>
-							<td className="text-right">{row.conversion}</td>
+							<td className="text-left">{row.clicks}</td>
+							<td className="text-left">{row.conversion}</td>
 						</tr>
-					))}
+					))} */}
 				</tbody>
 			</table>
 

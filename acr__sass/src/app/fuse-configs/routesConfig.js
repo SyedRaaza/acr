@@ -12,6 +12,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import HomeRoutesConfig from '../../home/homeRoutesConfig';
 import StepFormRouteConfig from "../main/stepForm/stepFormRoutesConfig";
+import AssessmentRouteConfig from "../main/apps/e-commerce/Assessments/assessmentRoutesConfig";
 
 const routeConfigs = [
 	...appsConfigs,
@@ -25,7 +26,9 @@ const routeConfigs = [
 	LogoutConfig,
 	CallbackConfig,
 	HomeRoutesConfig,
-	StepFormRouteConfig
+	StepFormRouteConfig,
+	AssessmentRouteConfig
+	
 
 
 	
@@ -39,10 +42,10 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: () => <Redirect to="/apps/dashboards/analytics" />
+		component: () => <Redirect to="/apps/dashboards/cis" />
 	},
 	{
-		component: () => <Redirect to="/pages/errors/error-404" />
+		component: () => <Redirect to="/apps/dashboards/cis" />
 	}
 ];
 

@@ -2,11 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
+import userServices from 'app/services/backendAPI/userServices';
 import { createUserSettingsFirebase, setUserData } from './userSlice';
 
 
 export const submitRegister = ({ first_name , last_name , organization_name , business_email , organization_domain ,  email }) => async dispatch => {
-	return jwtService
+	return userServices
 		.createUser({
 			first_name , 
 			last_name , 

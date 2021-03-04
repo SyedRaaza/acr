@@ -5,6 +5,10 @@ import i18n from './i18nSlice';
 import userReducer from './redux/users/userReducer';
 import cisReducer from './redux/CIS/cisReducer';
 import appStateReducer from './redux/applicationState/applicationStateReducer';
+import newUserReducer from './redux/userData/userDataReducer';
+import cisMaturityDataReducer from './redux/CISMaturityData/CISMaturityDataReducer';
+import cisDashboardDataReducer from './redux/dashboardCis/dashboardCisReducer';
+import showAssessmentDataReducer from './redux/ShowAssessment/showAssessmentReducer';
 
 const createReducer = asyncReducers => (state, action) => {
 	const combinedReducer = combineReducers({
@@ -14,6 +18,10 @@ const createReducer = asyncReducers => (state, action) => {
 		userReducer,
 		cisReducer,
 		appStateReducer,
+		newUserReducer,
+		cisMaturityDataReducer,
+		cisDashboardDataReducer,
+		showAssessmentDataReducer,
 		...asyncReducers
 	});
 

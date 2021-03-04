@@ -1,0 +1,1 @@
+export const baseURLget = "https://jsonplaceholder.typicode.com";

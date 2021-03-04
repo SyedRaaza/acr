@@ -16,7 +16,6 @@ setOpen(false);
 
 
 useEffect(() => {
-
     handleOpen()
 
 },[]);

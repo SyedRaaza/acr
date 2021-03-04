@@ -34,6 +34,7 @@ import Widget8 from './widgets/Widget8';
 import Widget9 from './widgets/Widget9';
 import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
+import NistRadar from './widgets/nistRadarChart';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -181,6 +182,7 @@ function ProjectDashboardApp(props) {
 			}
 			content={
 				<div className="p-12">
+					<NistRadar />
 					{tabValue === 0 && (
 						<FuseAnimateGroup
 							className="flex flex-wrap"

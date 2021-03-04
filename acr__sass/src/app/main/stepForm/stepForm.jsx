@@ -1,5 +1,5 @@
 import React, { useState , useEffect , useRef } from 'react';
-import {Button , Icon ,TextField , FormControl , Select , Typography , InputLabel} from "@material-ui/core";
+import {Button , Icon , FormControl , Select , Typography , InputLabel} from "@material-ui/core";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,14 +9,15 @@ import {Link} from "react-router-dom";
 import { TextFieldFormsy } from '@fuse/core/formsy';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch , useSelector} from 'react-redux';
 import Formsy from 'formsy-react';
+import userServices from 'app/services/backendAPI/userServices';
 
 
 var members = [];
 
 
-const MasterForm = () => {
+const MasterForm = ({newUSER}) => {
 
     const [tags, setTags] = useState([]);
     const [currentStep , setCurrentStep] = useState(0);
@@ -43,13 +44,15 @@ const MasterForm = () => {
         role1:"",
     });
 
+    
+
     const [memberOne , setmemberOne] = useState({});
     const [memberTwo , setmemberTwo] = useState({});
     const [memberThree , setmemberThree] = useState({});
     const [memberFour , setmemberFour] = useState({});
     const [memberFive , setmemberFive] = useState({});
     const [show ,setShow] = useState(0);
-    const chkSts = {name:'raza'}
+    const [password , setPassword] = useState({})
   
     const handleChange = event => {
       const name = event.target.name;
@@ -59,6 +62,16 @@ const MasterForm = () => {
         });   
         // formValues.members=[]
         // formValues.members.push({[name]:event.target.value})
+       // console.log(password)
+    }
+
+
+    const handleChangePassword = event => {
+      const name = event.target.name;
+        setPassword({
+            [name]: event.target.value
+        });  
+        console.log(password) 
     }
 
     const handleChange1 = event => {
@@ -112,27 +125,19 @@ const MasterForm = () => {
         // formValues.members.push({[name]:event.target.value})
     }
 
+
     const handleFormValuesSave = () => {
-      //console.log(show)
       if(show == 0) {
-        //let currentForm = checkForm;
         members = []
         members.push(memberOne);
-        //members.shift()
-        console.log(show +"form1")
       }
       else if (show == 1) {
-        //let currentForm = checkForm
         members = []
         members.push(memberOne , memberTwo)
-        //members.shift()
-       // members.push(chkSts)
-        console.log(show +"form2")
       }
       else if (show == 2) {
         members = []
         members.push(memberOne , memberTwo , memberThree)
-        console.log(show +"form3")
       }
       else if (show == 3) {
         members = []
@@ -144,6 +149,16 @@ const MasterForm = () => {
       }
     }
 
+    //handle for submit Members
+    const handleSubmitMembers = () => {
+      userServices.inviteMembers(members);
+    }
+
+    //Handle for ResetPassword
+    const handleResetPassword = () => {
+      userServices.resetPassword(newUSER.email , password.password)
+    };
+
     const handleChangeTag = newTag => {
         setTags(newTag)
         formValues.department=[];
@@ -154,7 +169,7 @@ const MasterForm = () => {
       // event.preventDefault()
       // const { username , email } = formValues
       // console.log(formValues)
-      console.log(tags)
+      console.log(formValues)
     }
     
     const _next = () => {
@@ -186,6 +201,27 @@ const MasterForm = () => {
     return null;
   }
   
+
+  const SkipButton = () => {
+    if(currentStep == 1){
+      return (
+        <Button
+            to=""
+            className="whitespace-nowrap mt-8"
+            variant="contained"
+            color="secondary"
+            onClick={_next}
+            type="button"
+            //style={{marginTop: "2rem"}}
+        >
+            <span className="sm:flex">Skip</span>
+        </Button>  
+      )
+    }
+    return null;
+  }
+
+
   const NextButton = () => {
     if(currentStep <2){
       return (
@@ -196,7 +232,13 @@ const MasterForm = () => {
             color="secondary"
             onClick={() => {
               _next();
-              handleFormValuesSave()
+              if(currentStep < 1) {
+                return null
+              }
+              else {
+                handleFormValuesSave();
+                handleSubmitMembers(members);
+              }
             }}
             type="button"
             //style={{marginTop: "2rem"}}
@@ -218,7 +260,8 @@ const MasterForm = () => {
             color="secondary"
             onClick={() => {
               handleSubmit();
-              console.log(members)
+              console.log(members);
+              handleResetPassword()
             }}
             type="button"
             // style={{marginTop: "2rem"}}
@@ -267,9 +310,11 @@ const MasterForm = () => {
                     newPassword={formValues.password}
                     confirmPassword={formValues.confirm_password}
                     handleChange={handleChange}
+                    handleChangePassword={handleChangePassword}
                     />
                     <div className="nxtPrv flex items-center justify-between">
                         <PreviousButton />
+                        <SkipButton />
                         <NextButton />
                         <SubmitButton />
                     </div>
@@ -279,7 +324,14 @@ const MasterForm = () => {
       );
     }
 
-  export default React.memo(MasterForm);
+    const mapStateToProps = state => {
+      console.log(state)
+        return {
+            newUSER: state.newUserReducer.user.data[0]
+        }
+    }
+
+  export default connect(mapStateToProps)(React.memo(MasterForm));
   
   function Step1(props) {
     if (props.currentStep !== 0) {
@@ -298,15 +350,15 @@ const MasterForm = () => {
                 <span className="mx-4">Add Department</span>
             </Typography>
         </FuseAnimate>
-        <ReactTagInput 
-            tags={props.tags}
-            placeholder="Enter Department Name and Press Enter"
-            editable="true"
-            removeOnBackspace="true"
-            onChange={props.handleChange}
-            className="ml-24 raza"
-            style={{marginLeft: "20px"}}
-        />
+        <div className="assessInfoForm">
+          <ReactTagInput 
+              tags={props.tags}
+              placeholder="Enter Department Name and Press Enter"
+              editable="true"
+              removeOnBackspace="true"
+              onChange={props.handleChange}
+          />
+        </div>
       </div>
     );
   }
@@ -542,7 +594,7 @@ const MasterForm = () => {
                       className=""
                       id="f_name2"
                       type="text"
-                      name="first_name2"
+                      name="first_name"
                       label="First Name"
                       value={f_name2}
                       onChange={handleChange2}
@@ -569,7 +621,7 @@ const MasterForm = () => {
                       className=""
                       id="l_name2"
                       type="text"
-                      name="last_name2"
+                      name="last_name"
                       label="Last Name"
                       value={l_name2}
                       onChange={handleChange2}
@@ -599,7 +651,7 @@ const MasterForm = () => {
                       className=""
                       id="email2"
                       type="text"
-                      name="email2"
+                      name="email"
                       label="Email"
                       value={email2}
                       onChange={handleChange2}
@@ -627,12 +679,12 @@ const MasterForm = () => {
                     <InputLabel htmlFor="outlined-age-native-simple">Assign Role</InputLabel>
                     <Select
                       native
-                      name="role2"
+                      name="role"
                       value=""
                       onChange={handleChange2}
                       label="Assign Role"
                       inputProps={{
-                        name: 'role_2',
+                        name: 'role',
                         id: 'policy-controlled',
                       }}
                     >
@@ -655,7 +707,7 @@ const MasterForm = () => {
                       className=""
                       id="f_name3"
                       type="text"
-                      name="first_name3"
+                      name="first_name"
                       label="First Name"
                       value={f_name3}
                       onChange={handleChange3}
@@ -682,7 +734,7 @@ const MasterForm = () => {
                       className=""
                       id="l_name3"
                       type="text"
-                      name="last_name3"
+                      name="last_name"
                       label="Last Name"
                       value={l_name3}
                       onChange={handleChange3}
@@ -712,7 +764,7 @@ const MasterForm = () => {
                       className=""
                       id="email3"
                       type="text"
-                      name="email3"
+                      name="email"
                       label="Email"
                       value={email3}
                       onChange={handleChange3}
@@ -740,12 +792,12 @@ const MasterForm = () => {
                     <InputLabel htmlFor="outlined-age-native-simple">Assign Role</InputLabel>
                     <Select
                       native
-                      name="role3"
+                      name="role"
                       value=""
                       onChange={handleChange3}
                       label="Assign Role"
                       inputProps={{
-                        name: 'role_3',
+                        name: 'role',
                         id: 'policy-controlled',
                       }}
                     >
@@ -768,7 +820,7 @@ const MasterForm = () => {
                       className=""
                       id="f_name4"
                       type="text"
-                      name="first_name4"
+                      name="first_name"
                       label="First Name"
                       value={f_name4}
                       onChange={handleChange4}
@@ -795,7 +847,7 @@ const MasterForm = () => {
                       className=""
                       id="l_name4"
                       type="text"
-                      name="last_name4"
+                      name="last_name"
                       label="Last Name"
                       value={l_name4}
                       onChange={handleChange4}
@@ -825,7 +877,7 @@ const MasterForm = () => {
                       className=""
                       id="email4"
                       type="text"
-                      name="email4"
+                      name="email"
                       label="Email"
                       value={email4}
                       onChange={handleChange4}
@@ -855,12 +907,12 @@ const MasterForm = () => {
                     <InputLabel htmlFor="outlined-age-native-simple">Assign Role</InputLabel>
                     <Select
                       native
-                      name="role3"
+                      name="role"
                       value=""
                       onChange={handleChange4}
                       label="Assign Role"
                       inputProps={{
-                        name: 'role_4',
+                        name: 'role',
                         id: 'policy-controlled',
                       }}
                     >
@@ -883,7 +935,7 @@ const MasterForm = () => {
                       className=""
                       id="f_name5"
                       type="text"
-                      name="first_name5"
+                      name="first_name"
                       label="First Name"
                       value={f_name5}
                       onChange={handleChange5}
@@ -910,7 +962,7 @@ const MasterForm = () => {
                       className=""
                       id="l_name5"
                       type="text"
-                      name="last_name5"
+                      name="last_name"
                       label="Last Name"
                       value={l_name5}
                       onChange={handleChange5}
@@ -940,7 +992,7 @@ const MasterForm = () => {
                       className=""
                       id="email5"
                       type="text"
-                      name="email5"
+                      name="email"
                       label="Email"
                       value={email5}
                       onChange={handleChange5}
@@ -968,12 +1020,12 @@ const MasterForm = () => {
                     <InputLabel htmlFor="outlined-age-native-simple">Assign Role</InputLabel>
                     <Select
                       native
-                      name="role5"
+                      name="role"
                       value=""
                       onChange={handleChange5}
                       label="Assign Role"
                       inputProps={{
-                        name: 'role5',
+                        name: 'role',
                         id: 'policy-controlled',
                       }}
                     >
@@ -992,7 +1044,7 @@ const MasterForm = () => {
     );
   }
 
-  const Step3 = ({currentStep , newPassword , confirmPassword ,handleChange}) => {
+  export const Step3 = ({currentStep , newPassword , confirmPassword ,handleChange ,handleChangePassword}) => {
       const [passLength , setPassLength] = useState(8);
       const formRef = useRef(null);
       const [showPassword, setShowPassword] = useState(false);
@@ -1003,8 +1055,6 @@ const MasterForm = () => {
       const checkConfirmPass = () => {
         if (newPassword != confirmPassword) {
           setPassLength(100)
-          console.log("8")
-          console.log(passLength)
         }
         else {setPassLength(8);}
       }
@@ -1034,7 +1084,10 @@ const MasterForm = () => {
                   name="password"
                   label="Enter New Password"
                   value=""
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    handleChangePassword(e);
+                  }}
                   validations={{
                     minLength: 8
                   }}

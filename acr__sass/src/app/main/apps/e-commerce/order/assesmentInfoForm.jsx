@@ -3,8 +3,16 @@ import TextField from '@material-ui/core/TextField';
 import {Button , Box} from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import ReactTagInput from "@pathofdev/react-tag-input";
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import "@pathofdev/react-tag-input/build/index.css";
 import "../../../../../styles/assesInfoForm.scss";
+import { getCisData } from '../../../../store/redux';
+import {connect , useDispatch} from "react-redux";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,30 +25,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const AssesmentInfoForm = ({changeTab , nextTab}) => {
+const AssesmentInfoForm = ({changeTab , nextTab , handleEnableTabs , userData , cisMaturityData}) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [tags, setTags] = useState([])
+  const [selectedDateTo, setSelectedDateTo] = useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDateFrom, setSelectedDateFrom] = useState(new Date('2014-08-18T21:11:54'));
   const [input , setInput] = useState({
     name: "",
-    period: "",
-    department: [],
-    owner: ""
+    period_to: "2020-01-26",
+    period_from: "2020-01-01",
+    departments: [],
+    owner_id: 1,
   });
-
   const handleChangeInput = event => {
     const name = event.target.name;
     setInput({
         ...input,
         [name]: event.target.value
     });
-    console.log(input)
-    console.log(tags)
   }
 
   const handleChangeTag = newTag => {
     setTags(newTag)
-    input.department = [];
-    input.department.push(newTag);
+    input.departments = [];
+    input.departments = newTag ;
+  }
+
+
+  const getCis = () => {
+    dispatch(getCisData(input))
   }
   return(
     <div>
@@ -55,17 +69,33 @@ const AssesmentInfoForm = ({changeTab , nextTab}) => {
                 value={input.name}
                 onChange={handleChangeInput}
             />
-            <TextField
-                id="period-input"
-                label="Period"
-                type="text"
-                autoComplete=""
-                variant="outlined"
-                name="period"
-                value={input.period}
-                onChange={handleChangeInput}
-            />
-            <Box>
+            <div className="w-full flex items-center justify-between">
+              <TextField
+                  id="period-input"
+                  label="From"
+                  type="date"
+                  autoComplete=""
+                  variant="outlined"
+                  name="period_from"
+                  value={input.period_from}
+                  onChange={handleChangeInput}
+                  className="assessment__date"
+              />
+              <TextField
+                  id="period-input"
+                  label="To"
+                  type="date"
+                  autoComplete=""
+                  variant="outlined"
+                  name="period_to"
+                  value={input.period_to}
+                  onChange={handleChangeInput}
+                  className="-mr-2"
+                  style={{marginRight: "-8px !important"}}
+                  className="assessment__date assessment__from"
+              />
+            </div>
+            <div className="assessInfoForm">
               <ReactTagInput 
               tags={tags}
               placeholder="Enter Department Name and Press Enter"
@@ -73,7 +103,7 @@ const AssesmentInfoForm = ({changeTab , nextTab}) => {
               removeOnBackspace="true"
               onChange={handleChangeTag}
               />
-            </Box>
+            </div>
             <TextField
                 id="owner-input"
                 label="Owner"
@@ -81,8 +111,9 @@ const AssesmentInfoForm = ({changeTab , nextTab}) => {
                 autoComplete=""
                 variant="outlined"
                 name="owner"
-                value={input.owner}
+                value={`${userData.first_name} ${userData.last_name}`}
                 onChange={handleChangeInput}
+                disabled
             />
             <div className="buttonNext">
                 <button type="submit" disabled style={{display: "none"}} aria-hidden="true"></button>
@@ -91,7 +122,7 @@ const AssesmentInfoForm = ({changeTab , nextTab}) => {
                     className="whitespace-nowrap"
                     variant="contained"
                     color="secondary"
-                    onClick={(e) => {e.preventDefault();changeTab(undefined , nextTab);console.log(input)}}
+                    onClick={(e) => {e.preventDefault() ;console.log(input); getCis(); handleEnableTabs(false)}}
                     type="submit"
                 >
                     <span className="sm:flex">NEXT</span>
@@ -102,4 +133,12 @@ const AssesmentInfoForm = ({changeTab , nextTab}) => {
   )
 }
 
-export default React.memo(AssesmentInfoForm);
+const mapStateToProps = state => {
+  return {
+    userData: state.newUserReducer.user.data[0],
+    cisMaturityData :state.cisMaturityData
+  }
+}
+
+
+export default connect(mapStateToProps)(React.memo(AssesmentInfoForm));

@@ -72,7 +72,7 @@ function OrdersTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/e-commerce/orders/${item.id}`);
+		props.history.push(`/apps/maturity/cis/create`);
 	}
 
 	function handleCheck(event, id) {

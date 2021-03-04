@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 function UserNavbarHeader(props) {
 	const user = useSelector(({ auth }) => auth.user);
+	const userData = useSelector(state => state.newUserReducer.user.data[0]);
 
 	const classes = useStyles();
 
@@ -48,15 +49,16 @@ function UserNavbarHeader(props) {
 			color="primary"
 			classes={{ root: classes.root }}
 			className="user relative flex flex-col items-center justify-center pt-24 pb-64 mb-32 z-0 shadow-0"
+			//style={{backgroundImage: `url(${"assets/images/avatars/logo.png"})` , backgroundPosition: "center" , backgroundRepeat: "no-repeat" , backgroundSize: "cover"}}
 		>
 			{/* <h1>Pligence</h1> */}
-			<Typography className="username text-16 whitespace-nowrap" color="inherit">
-				{user.data.displayName}
+			{/* <Typography className="username text-16 whitespace-nowrap" color="inherit">
+				{`${userData.first_name} ${userData.last_name}`}
 			</Typography>
 			<Typography className="email text-13 mt-8 opacity-50 whitespace-nowrap" color="inherit">
-				{user.data.email}
-			</Typography>
-			<Avatar
+				{userData.email}
+			</Typography> */}
+			{/* <Avatar
 				className={clsx(classes.avatar, 'avatar')}
 				alt="user photo"
 				src={
@@ -64,7 +66,8 @@ function UserNavbarHeader(props) {
 						? user.data.photoURL
 						: 'assets/images/avatars/profile.jpg'
 				}
-			/>
+			/> */}
+			<img src={userData.organization_data.logo} className="p-8" />
 		</AppBar>
 	);
 }

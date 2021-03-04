@@ -24,20 +24,40 @@ const navigationConfig = [
 				translate: 'DASHBOARDS',
 				type: 'collapse',
 				icon: 'dashboard',
-				url: '/apps/dashboards/analytics',
+				url: '/apps/dashboards/cis',
 				children: [
 					{
-						id: 'analytics-dashboard',
-						title: 'CIS',
-						type: 'item',
-						url: '/apps/dashboards/analytics'
+						id: "maturity-assessment-dashboard",
+						title: "Maturity Assessment",
+						type: "collapse",
+						url: '/apps/dashboards/cis',
+						children: [
+							{
+								id: 'analytics-dashboard',
+								title: 'CIS',
+								type: 'item',
+								url: '/apps/dashboards/cis'
+							},
+							{
+								id: 'project-dashboard',
+								title: 'NIST',
+								type: 'item',
+								url: '/apps/dashboards/nist'
+							}
+						]
 					},
-					{
-						id: 'project-dashboard',
-						title: 'NIST',
-						type: 'item',
-						url: '/apps/dashboards/project'
-					}
+					// {
+					// 	id: 'analytics-dashboard',
+					// 	title: 'CIS',
+					// 	type: 'item',
+					// 	url: '/apps/dashboards/cis'
+					// },
+					// {
+					// 	id: 'project-dashboard',
+					// 	title: 'NIST',
+					// 	type: 'item',
+					// 	url: '/apps/dashboards/nist'
+					// }
 				]
 			},
 			//Calendear----------------------------------------
@@ -55,20 +75,20 @@ const navigationConfig = [
 				translate: 'Maturity Assesment',
 				type: 'collapse',
 				icon: 'assessment',
-				url: '/apps/e-commerce',
+				url: '/apps/maturity/cis',
 				children: [
 					{
 						id: 'e-commerce-products',
 						title: 'CIS Maturity',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/maturity/cis',
 						exact: true
 					},
 					{
 						id: 'e-commerce-product-detail',
 						title: 'NIST Maturity',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/maturity/nist',
 						exact: true
 					},
 					// {
@@ -581,7 +601,7 @@ const navigationConfig = [
 	// 	]
 	// },
 	//Documentation-----------------------------------------------------------
-	//DocumentationNavigation,
+	DocumentationNavigation,
 	// {
 	// 	type: 'divider',
 	// 	id: 'divider-1'

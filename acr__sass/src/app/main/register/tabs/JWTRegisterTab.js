@@ -6,6 +6,7 @@ import Formsy from 'formsy-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitRegister } from 'app/auth/store/registerSlice';
+import userServices from 'app/services/backendAPI/userServices';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {connect} from 'react-redux';
@@ -88,7 +89,8 @@ function JWTRegisterTab({userData}) {
 	}
 
 	function handleSubmit(model) {
-		dispatch(submitRegister(model));
+		//dispatch(submitRegister(model));
+		userServices.createUser(model)
 		//console.log(model)
 		//console.log(userData)
 		handleOpen();
@@ -331,7 +333,7 @@ function JWTRegisterTab({userData}) {
 							<div className="registerModal">
 								<p>Welcome to ACR! <br/>{userData.user.data.message}</p>
 								<div className="registerModal--Button">
-									<button onClick={(e) => {e.preventDefault();handleClose();setLength(100)}}>Proceed</button>
+									<button onClick={(e) => {e.preventDefault();handleClose();setLength(100)}}>OK</button>
 								</div>
 							</div>
 						</Modal>
@@ -346,7 +348,7 @@ function JWTRegisterTab({userData}) {
 							disableBackdropClick="true"
 						>
 							<div className="registerModal">
-								<p>Welcome to ACR!<br />Please Login to proceed further.</p>
+								<p>Welcome to ACR!<br />We have sent you an email.Please use the credentials provided in the emial to login.</p>
 								<div className="registerModal--Button">
 									<Link to="/login">
 										<button >Login</button>

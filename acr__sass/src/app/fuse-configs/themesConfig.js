@@ -1,5 +1,8 @@
 import { fuseDark, skyBlue } from '@fuse/colors';
 import { lightBlue, red } from '@material-ui/core/colors';
+import {customizeTheme} from "../main/documentation/getting-started/branding/branding";
+
+const name = "JohnTheDark"
 
 const themesConfig = {
 	default: {
@@ -643,7 +646,38 @@ const themesConfig = {
 		status: {
 			danger: 'orange'
 		}
+	},
+	TenantTheme: {
+		palette: {
+			type: 'light',
+			primary: {
+				light: '#b3d1d1',
+				main: '#006565',
+				dark: '#003737'
+			},
+			secondary: {
+				light: '#ffecc0',
+				main: '#FFBE2C',
+				dark: '#ff9910',
+				contrastText: '#272727'
+			},
+			background: {
+				paper: '#FFFFFF',
+				default: '#F0F7F7'
+			},
+			error: red
+		},
+		status: {
+			danger: 'orange'
+		}
 	}
+	
 };
+
+export const addTheme = theme => {
+	//alert(JSON.stringify(theme))
+	//alert(JSON.stringify(themesConfig))
+	themesConfig[name] = theme
+}
 
 export default themesConfig;

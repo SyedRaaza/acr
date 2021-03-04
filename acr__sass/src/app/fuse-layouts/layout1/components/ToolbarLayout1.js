@@ -3,6 +3,7 @@ import FuseShortcuts from '@fuse/core/FuseShortcuts';
 import AppBar from '@material-ui/core/AppBar';
 import Hidden from '@material-ui/core/Hidden';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import ChatPanelToggleButton from 'app/fuse-layouts/shared-components/chatPanel/ChatPanelToggleButton';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
@@ -22,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(selectToolbarTheme);
+	const organization = useSelector(state => state.newUserReducer.user.data[0].organization_data)
 
 	const classes = useStyles(props);
 
@@ -40,10 +42,10 @@ function ToolbarLayout1(props) {
 						</Hidden>
 					)}
 
-					<div className="flex flex-1">
-						<Hidden mdDown>
-							<FuseShortcuts className="px-16" />
-						</Hidden>
+					<div className="flex justify-center flex-1 font-bold">
+						<Typography component="span" className="font-bold text-lg capitalize flex" color="textPrimary">
+							{organization.organization_name}
+						</Typography>
 					</div>
 
 					<div className="flex items-center px-8">

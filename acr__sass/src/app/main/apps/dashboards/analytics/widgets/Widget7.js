@@ -8,66 +8,130 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React, { useState } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import React, { useState , useEffect } from 'react';
+import { Doughnut , Polar , Radar } from 'react-chartjs-2';
+import { connect } from 'react-redux';
+import FuseLoading from '@fuse/core/FuseLoading';
+
 
 function Widget7(props) {
 	const theme = useTheme();
 	const [dataset, setDataset] = useState('Today');
 	const data = _.merge({}, props.data);
+	const [loading , setLoading] = useState(true)
+	const [controImplementationData , setControlImplementationData] = useState({})
+	const [groupImplementationData , setGroupImplementationData] = useState({})
+	const [controlImplementationLabels , setControlImplementationLabels] = useState({})
+	const {DashboardData} = props;
+
+	useEffect(() => {
+		//alert(JSON.stringify(data.options) + "From widget 7")
+		if(DashboardData.loading == true) {
+			setLoading(true)
+		}
+		else if (DashboardData.loading == false) {
+			var objectCheck = {}
+			if (DashboardData.cisDashboard.data.data == null ) {
+				objectCheck = DashboardData.cisDashboard.data.dashboard_data
+			}
+			else {
+				objectCheck = DashboardData.cisDashboard.data.data.dashboard_data
+			}
+			if(Object.keys(objectCheck).length > 0) {
+			var newData = {
+				control:[ {
+					data: objectCheck.implementation_by_controls.data,
+					lable: "Controls Implementation Percentage",
+					fill: "start"
+				}]
+			}
+			setControlImplementationData(newData)
+			setGroupImplementationData(objectCheck.group_implementation)
+			setControlImplementationLabels(objectCheck.implementation_by_controls.labels)
+			setLoading(false)
+			}
+			else {
+				var newData = {
+					control:[ {
+						data: [],
+						lable: "Controls Implementation Percentage",
+						fill: "start"
+					}]
+				}
+				setControlImplementationData(newData)
+				setGroupImplementationData({"data":[] , "labels":[] })
+				setControlImplementationLabels([])
+				setLoading(false)
+			}
+	}
+	},[DashboardData.loading , DashboardData.cisDashboard , groupImplementationData])
+
+	if (loading) {
+		return <FuseLoading />;
+	}
 
 	return (
 		<Card className="w-full rounded-8 shadow">
-			<div className="p-16">
-				<Typography className="h1 font-300">Sessions by device</Typography>
+			<div className="flex items-center justify-between px-16 h-64 border-b-1">
+				<Typography className="text-16">Control Scores</Typography>
 			</div>
 
-			<div className="h-224 relative">
-				<Doughnut
+			<div className="h-400 w-full p-10">
+				<Radar
 					data={{
-						labels: data.labels,
-						datasets: data.datasets[dataset].map(obj => ({
+						labels: ["CIS #01",
+						"CIS #02",
+						"CIS #03",
+						"CIS #04",
+						"CIS #05",
+						"CIS #06",
+						"CIS #07",
+						"CIS #08",
+						"CIS #09",
+						"CIS #10",
+						"CIS #11",
+						"CIS #12",
+						"CIS #13",
+						"CIS #14",
+						"CIS #15",
+						"CIS #16",
+						"CIS #17",
+						"CIS #18",
+						"CIS #19",
+						"CIS #20"],
+						datasets: controImplementationData["control"].map(obj => ({
 							...obj,
 							borderColor: theme.palette.divider,
-							backgroundColor: [
-								theme.palette.primary.dark,
-								theme.palette.primary.main,
-								theme.palette.primary.light
-							],
-							hoverBackgroundColor: [
-								theme.palette.secondary.dark,
-								theme.palette.secondary.main,
+							fill: origin,
+							backgroundColor: 
+								// '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff', '#000000'
+								// theme.palette.secondary.dark,
+								// theme.palette.secondary.main,
 								theme.palette.secondary.light
-							]
+							,
+							// hoverBackgroundColor: [
+							// 	theme.palette.secondary.dark,
+							// 	theme.palette.secondary.main,
+							// 	theme.palette.secondary.light
+							// ]
 						}))
 					}}
-					options={data.options}
+					options={{"cutoutPercentage":75,"spanGaps":false,"legend":{"display":false},"maintainAspectRatio":false}}
 				/>
 			</div>
 
-			<div className="p-16 flex flex-row items-center justify-center">
-				{data.labels.map((label, index) => (
+			{/* <div className="p-16 flex flex-row items-center justify-center">
+				{groupImplementationData.data.map((label, index) => (
 					<div key={label} className="px-16 flex flex-col items-center">
-						<Typography className="h4" color="textSecondary">
-							{label}
-						</Typography>
-						<Typography className="h2 font-300 py-8">{data.datasets[dataset][0].data[index]}%</Typography>
-
-						<div className="flex flex-row items-center justify-center">
-							{data.datasets[dataset][0].change[index] < 0 && (
-								<Icon className="text-18 text-red">arrow_downward</Icon>
-							)}
-
-							{data.datasets[dataset][0].change[index] > 0 && (
-								<Icon className="text-18 text-green">arrow_upward</Icon>
-							)}
-							<div className="h5 px-4">{data.datasets[dataset][0].change[index]}%</div>
-						</div>
+							<Typography className="h6" color="textSecondary">
+								{groupImplementationData.labels[index]}
+							</Typography>
+						<Typography className="h6 font-200 py-8">{label}%</Typography>
 					</div>
 				))}
-			</div>
+			</div> */}
 
-			<Divider className="mx-16" />
+			{/* <Divider className="mx-16" />
 
 			<div className="p-16 flex flex-row items-center justify-between">
 				<div>
@@ -82,9 +146,15 @@ function Widget7(props) {
 					</FormControl>
 				</div>
 				<Button size="small">OVERVIEW</Button>
-			</div>
+			</div> */}
 		</Card>
 	);
 }
 
-export default React.memo(Widget7);
+const mapStateToProps = state => {
+	return {
+		DashboardData: state.cisDashboardDataReducer
+	}
+}
+
+export default connect(mapStateToProps)(React.memo(Widget7));

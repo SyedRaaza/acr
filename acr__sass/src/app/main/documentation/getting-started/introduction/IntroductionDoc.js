@@ -1,66 +1,151 @@
+import React , {useState , useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import _ from '@lodash';
+//import ProductsTableHead from './ProductsTableHead';
+import {useTheme} from "@material-ui/core/styles";
+import FuseLoading from '@fuse/core/FuseLoading';
+import { useDispatch, useSelector } from 'react-redux';
+import TableHead from '@material-ui/core/TableHead';
+import { Button } from '@material-ui/core';
 
 function IntroductionDoc() {
+	const theme = useTheme();
+
+	const [loading, setLoading] = useState(false);
+	const userData = useSelector(state => state.newUserReducer.user.data[0])
+
+	if (loading) {
+		return <FuseLoading />;
+	}
+
+	// function handleRequestSort(event, property) {
+	// 	const id = property;
+	// 	let direction = 'desc';
+
+	// 	if (order.id === property && order.direction === 'desc') {
+	// 		direction = 'asc';
+	// 	}
+
+	// 	setOrder({
+	// 		direction,
+	// 		id
+	// 	});
+	// }
+
+	// function handleSelectAllClick(event) {
+	// 	if (event.target.checked) {
+	// 		setSelected(data.map(n => n.id));
+	// 		return;
+	// 	}
+	// 	setSelected([]);
+	// }
+
+	// function handleDeselect() {
+	// 	setSelected([]);
+	// }
+
 	return (
 		<>
-			<Typography variant="h4" className="mb-24">
-				Introduction
-			</Typography>
-			<Typography className="mb-16" component="p">
-				This version of Fuse is <i>NOT</i> a traditional admin template, it's a React app written entirely with
-				Javascript and has no jQuery dependency.
-			</Typography>
-			<Typography className="mb-16" component="p">
-				While Fuse React is a great tool and source for learning React, it also requires at least an entry-level
-				of React, Redux knowledge so you can find your way within the source code.
-			</Typography>
-			<Typography className="mb-32" component="p">
-				Here you can find a list of core libraries, design specifications, and coding standards that we use in
-				Fuse React:
-			</Typography>
-			<Typography className="mb-8" variant="h5">
-				Google's Material Design
-			</Typography>
-			<Typography className="mb-16" component="p">
-				All libraries and custom made components are following{' '}
-				<a
-					href="https://www.google.com/design/spec/material-design/introduction.html"
-					target="_blank"
-					rel="noreferrer noopener"
-				>
-					Google's Material Design Specifications.
-				</a>
-			</Typography>
-			<Typography className="mt-32 mb-8" variant="h5">
-				React
-			</Typography>
-			<Typography className="mb-16" component="p">
-				<a href="https://reactjs.org/" target="_blank" rel="noreferrer noopener">
-					React
-				</a>{' '}
-				is the core of our template. If you don't know what React is or don't know how to use it, we strongly
-				recommend checking the React before start doing anything with Fuse.
-			</Typography>
-			<Typography className="mt-32 mb-8" variant="h5">
-				Material-UI
-			</Typography>
-			<Typography className="mb-16" component="p">
-				<a href="https://material-ui-next.com" target="_blank" rel="noreferrer noopener">
-					Material-UI
-				</a>{' '}
-				is a react UI library that implements Google's Material Design specification.
-			</Typography>
-			<Typography className="mt-32 mb-8" variant="h5">
-				Create React App (CLI)
-			</Typography>
-			<Typography className="mb-16" component="p">
-				<a href="https://github.com/facebook/create-react-app" target="_blank" rel="noreferrer noopener">
-					Create React App
-				</a>{' '}
-				is a tool built by developers at Facebook to help you build React applications. It saves you from
-				time-consuming setup and configuration.
-			</Typography>
+			<div className="w-full flex flex-col">
+				<div className="w-full flex justify-between items-center p-8">
+					<Typography className="text-base font-bold">
+						All Members
+					</Typography>
+					<Button
+					//component={Link}
+					to=""
+					className="whitespace-nowrap"
+					variant="contained"
+					color="secondary"
+					>Add New Member</Button>
+				</div>
+			<FuseScrollbars className="flex-grow overflow-x-auto">
+				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
+					{/* <ProductsTableHead
+						selectedProductIds={selected}
+						order={order}
+						onSelectAllClick={handleSelectAllClick}
+						onRequestSort={handleRequestSort}
+						rowCount={data.length}
+						onMenuItemClick={handleDeselect}
+					/> */}
+					<TableHead>
+						<TableRow>
+							<TableCell>First Name</TableCell>
+							<TableCell align="left">Last Name</TableCell>
+							<TableCell align="left">Email</TableCell>
+							<TableCell align="left">Role</TableCell>
+						</TableRow>
+					</TableHead>
+
+					<TableBody>
+						{/* {assessmentData.cisMaturityData.data.data.map((val , key) => (							 */}
+									<TableRow
+										className="h-64 cursor-pointer"
+										hover
+										role="checkbox"
+										//aria-checked={isSelected}
+										tabIndex={-1}
+										//key={key}
+										//selected={isSelected}
+										//onClick={event => handleClick(val)}
+										//onClick={() => {history.push('/apps/assessment') ; dispatch(provideShowAssessment(val))}}
+										
+									>
+										<TableCell className="p-4 md:p-16" component="th" scope="row">
+											{userData.first_name}
+										</TableCell>
+
+										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
+											{/* {val.departments.map((val , key) => (
+												<span style={{backgroundColor: theme.palette.primary.dark , color: "#fff" , borderRadius: ".4rem"}} key={key} className="p-2 m-4">{val}</span>
+											))} */}
+											{userData.last_name}
+											
+										</TableCell>
+
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+											{/* {val.owner_id} */}
+											{userData.email}
+										</TableCell>
+
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+											{/* {val.period_to} */}
+											{userData.type}
+										</TableCell>
+
+										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="left">
+											{/* {val.period_from} */}
+											{/* Period From Date
+										</TableCell>  */}
+									</TableRow>
+								{/* ))} */}
+					</TableBody>
+				</Table>
+			</FuseScrollbars>
+
+			{/* <TablePagination
+				className="flex-shrink-0 border-t-1"
+				component="div"
+				count={data.length}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				backIconButtonProps={{
+					'aria-label': 'Previous Page'
+				}}
+				nextIconButtonProps={{
+					'aria-label': 'Next Page'
+				}}
+				onChangePage={handleChangePage}
+				onChangeRowsPerPage={handleChangeRowsPerPage}
+			/> */}
+		</div>
 		</>
 	);
 }

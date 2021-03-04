@@ -92,7 +92,7 @@ function ProductsTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-64">
-				<TableCell padding="none" className="w-40 md:w-64 text-center z-99">
+				{/* <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
 					<Checkbox
 						indeterminate={numSelected > 0 && numSelected < props.rowCount}
 						checked={props.rowCount !== 0 && numSelected === props.rowCount}
@@ -135,8 +135,8 @@ function ProductsTableHead(props) {
 							</Menu>
 						</div>
 					)}
-				</TableCell>
-				{rows.map(row => {
+				</TableCell> */}
+				{/* {rows.map(row => {
 					return (
 						<TableCell
 							className="p-4 md:p-16"
@@ -145,7 +145,7 @@ function ProductsTableHead(props) {
 							padding={row.disablePadding ? 'none' : 'default'}
 							sortDirection={props.order.id === row.id ? props.order.direction : false}
 						>
-							{row.sort && (
+							{/* {row.sort && (
 								<Tooltip
 									title="Sort"
 									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
@@ -159,10 +159,39 @@ function ProductsTableHead(props) {
 										{row.label}
 									</TableSortLabel>
 								</Tooltip>
-							)}
-						</TableCell>
+							)} */}
+						{/* </TableCell>
 					);
-				}, this)}
+				}, this)} */}
+						<TableCell
+							className="p-4 md:p-16"
+							// key={row.id}
+							// align={row.align}
+							// padding={row.disablePadding ? 'none' : 'default'}
+							// sortDirection={props.order.id === row.id ? props.order.direction : false}
+						>
+							Name
+						</TableCell>
+						<TableCell
+							className="p-4 md:p-16"
+						>
+							Departments
+						</TableCell>
+						<TableCell
+							className="p-4 md:p-16"
+						>
+							Owner
+						</TableCell>
+						<TableCell
+							className="p-4 md:p-16"
+						>
+							From
+						</TableCell>
+						<TableCell
+							className="p-4 md:p-16"
+						>
+							To
+						</TableCell>
 			</TableRow>
 		</TableHead>
 	);

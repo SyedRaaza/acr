@@ -31,7 +31,7 @@ function SchemePreview({ theme, className, id, onSelect }) {
 					backgroundColor,
 					color: backgroundColorContrast
 				}}
-				onClick={() => onSelect(id)}
+				onClick={() => {onSelect(id)}}
 				type="button"
 			>
 				<div
@@ -92,12 +92,7 @@ function FuseThemeSchemes(props) {
 				footer: themeId
 			}
 		};
-
-		if (user.role === 'guest') {
-			dispatch(setDefaultSettings(newSettings));
-		} else {
-			dispatch(updateUserSettings(newSettings));
-		}
+		dispatch(setDefaultSettings(newSettings));
 	}
 
 	return (

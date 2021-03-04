@@ -10,6 +10,7 @@ import '../styles/homePageStyles/navigation.scss';
 import Logo from "./images/logo.png";
 
 function Navbar({handleView}) {
+
     return (
         <div className="navigationHome flex justify-between items-center">
             <div className="navigationHome--logo">

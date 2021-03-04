@@ -16,7 +16,7 @@ import AppContext from './AppContext';
 import { Auth } from './auth';
 import routes from './fuse-configs/routesConfig';
 import store from './store';
-import {useState , useEffect} from 'react';
+import {useState} from 'react';
 import LandingPage from "../home/landing";
 
 
@@ -28,8 +28,10 @@ const jss = create({
 
 const generateClassName = createGenerateClassName();
 
+
+
 const App = () => {
-	const [view , setView] = useState(false);
+	const [view , setView] = useState(true);
 	const handleView = () => {
 		setView(false)
 	}
@@ -60,5 +62,6 @@ const App = () => {
 		</React.Fragment>
 	);
 };
+
 
 export default App;

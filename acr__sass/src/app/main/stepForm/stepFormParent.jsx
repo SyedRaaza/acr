@@ -11,7 +11,7 @@ const StepFormParent = (props) => {
 				contentCard: 'overflow-hidden',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<h1>Header</h1>}
+			header={<h1></h1>}
 			// content={<ProductsTable />}
 			content={<ModalComponent />}
 			innerScroll
