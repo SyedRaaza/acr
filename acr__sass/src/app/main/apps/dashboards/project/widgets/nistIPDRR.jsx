@@ -101,7 +101,7 @@ const NistIPDRR = (props) => {
                     type="button"
                     onClick={() => setToggle(!toggle)}
                     >
-                        {toggle ? "Slide View new" : "Chart View"}
+                        {toggle ? "Slide View" : "Chart View"}
                 </Button>
                 </div>
             </Card>
