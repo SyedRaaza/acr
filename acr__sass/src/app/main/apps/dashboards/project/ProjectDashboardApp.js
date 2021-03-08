@@ -35,6 +35,7 @@ import Widget9 from './widgets/Widget9';
 import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
 import NistRadar from './widgets/nistRadarChart';
+import NistIPDRR from "./widgets/nistIPDRR";
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -59,6 +60,7 @@ function ProjectDashboardApp(props) {
 	const dispatch = useDispatch();
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
+	const User = useSelector(({newUserReducer}) => newUserReducer.user.data[0])
 
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -113,8 +115,8 @@ function ProjectDashboardApp(props) {
 			header={
 				<div className="flex flex-col justify-between flex-1 px-24 pt-24">
 					<div className="flex justify-between items-start">
-						<Typography className="py-0 sm:py-24 text-24 md:text-32" variant="h4">
-							Welcome back, John!
+						<Typography className="py-0 sm:py-24 text-24 capitalize md:text-32" variant="h4">
+							Welcome back, {User.first_name}!
 						</Typography>
 						<Hidden lgUp>
 							<IconButton
@@ -125,39 +127,6 @@ function ProjectDashboardApp(props) {
 								<Icon>menu</Icon>
 							</IconButton>
 						</Hidden>
-					</div>
-					<div className="flex items-end">
-						<div className="flex items-center">
-							<div className={clsx(classes.selectedProject, 'flex items-center h-40 px-16 text-16')}>
-								{_.find(projects, ['id', selectedProject.id]).name}
-							</div>
-							<IconButton
-								className={clsx(classes.projectMenuButton, 'h-40 w-40 p-0')}
-								aria-owns={selectedProject.menuEl ? 'project-menu' : undefined}
-								aria-haspopup="true"
-								onClick={handleOpenProjectMenu}
-							>
-								<Icon>more_horiz</Icon>
-							</IconButton>
-							<Menu
-								id="project-menu"
-								anchorEl={selectedProject.menuEl}
-								open={Boolean(selectedProject.menuEl)}
-								onClose={handleCloseProjectMenu}
-							>
-								{projects &&
-									projects.map(project => (
-										<MenuItem
-											key={project.id}
-											onClick={ev => {
-												handleChangeProject(project.id);
-											}}
-										>
-											{project.name}
-										</MenuItem>
-									))}
-							</Menu>
-						</div>
 					</div>
 				</div>
 			}
@@ -183,6 +152,7 @@ function ProjectDashboardApp(props) {
 			content={
 				<div className="p-12">
 					<NistRadar />
+					<NistIPDRR />
 					{tabValue === 0 && (
 						<FuseAnimateGroup
 							className="flex flex-wrap"
