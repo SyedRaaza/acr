@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 		minWidth: navbarWidth,
 		height: '100%',
 		zIndex: 4,
-		backgroundColor: "#000",
+		backgroundColor: theme.palette.background.paper,
 		transition: theme.transitions.create(['width', 'min-width'], {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.shorter

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import {useDispatch} from "react-redux";
-import {getCisMaturityData} from "../../../store/redux/index";
 
 
 const ECommerceAppConfig = {
@@ -12,6 +10,10 @@ const ECommerceAppConfig = {
 		{
 			path: '/apps/e-commerce/products/:productId/:productHandle?',
 			component: React.lazy(() => import('./product/Product'))
+		},
+		{
+			path: '/apps/maturity/ISO',
+			component: React.lazy(() => import('./ISO/ISO_Maturity'))
 		},
 		{
 			path: '/apps/maturity/cis',

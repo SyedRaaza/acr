@@ -21,17 +21,18 @@ function Branding(props) {
 	const userData = useSelector(state => state.newUserReducer.user);
 	const [disabled , setDisabled] = useState(true);
     const [logo , setLogo] = useState([]);
+    const userPersonalColorScheme = userData.data[0].organization_data.color_schemes;
 	const [input , setInput] = useState({
-        type: "light",
-        primary_light: "#0054da",
-        primary_main: "#005ef4",
-        primary_dark: "#287bff",
-        secondary_light: skyBlue[100],
-        secondary_main: skyBlue[500],
-        secondary_dark: skyBlue[900],
-        secondary_contrastText: "",
-        background_paper: "#FFFFFF",
-        background_default: "#f6f7f9",
+        type: userPersonalColorScheme.palette.type,
+        primary_light: userPersonalColorScheme.palette.primary.light,
+        primary_main: userPersonalColorScheme.palette.primary.main,
+        primary_dark: userPersonalColorScheme.palette.primary.dark,
+        secondary_light: userPersonalColorScheme.palette.secondary.light,
+        secondary_main: userPersonalColorScheme.palette.secondary.main,
+        secondary_dark: userPersonalColorScheme.palette.secondary.dark,
+        secondary_contrastText: userPersonalColorScheme.palette.secondary.contrastText,
+        background_paper: userPersonalColorScheme.palette.background_paper,
+        background_default: userPersonalColorScheme.palette.background_default,
 
 	  });
 

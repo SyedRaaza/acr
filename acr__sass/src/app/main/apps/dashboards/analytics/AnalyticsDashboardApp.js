@@ -1,3 +1,4 @@
+import React, { useEffect , useState , Suspense} from 'react';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -5,7 +6,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import withReducer from 'app/store/withReducer';
-import React, { useEffect , useState} from 'react';
 import { useDispatch, useSelector , connect } from 'react-redux';
 import FuseLoading from '@fuse/core/FuseLoading';
 import _ from '@lodash';
@@ -30,6 +30,7 @@ import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import "../../../.././../styles/noAssessmentsPage.scss";
+import {updateUser} from '../../../../store/redux/index';
 
 
 
@@ -56,12 +57,6 @@ const NoAssessment = () => {
 				to="/apps/e-commerce/products"
 				role="button"
 			>
-				{/* <Typography className="sm:hidden lg:visible md:visible px-16 text-14 font-600 font-extrabold">
-					Add New Assessment
-				</Typography>
-				<Typography noWrap className="lg:hidden md:hidden sm:visible px-16 text-14 font-600 font-extrabold">
-					Add
-				</Typography> */}
 				<span className="hidden sm:flex">Add New Assesment</span>
 				<span className="flex sm:hidden">New</span>
 			</Button>
@@ -75,7 +70,8 @@ function AnalyticsDashboardApp({DashboardData}) {
 	const widgets = useSelector(selectWidgetsEntities);
 	const [assessmentList , setAssessmentList] = useState();
 	const [loading , setLoading] = useState(true);
-	const [select , setSelect] = useState()
+	const [select , setSelect] = useState();
+	const WidgetOneDashboardData = useSelector(state => state.cisDashboardDataReducer)
 
 
 	useEffect(() => {
@@ -106,11 +102,15 @@ function AnalyticsDashboardApp({DashboardData}) {
 		dispatch(getUpdatedDashboardCisData({"assessment_id":event.target.value}))
 	};
 
+	const changeUserName = () => {
+		dispatch(updateUser("Usman"))
+	}
+
 	return (
 		DashboardData.assessment_list.length == 0 ? <NoAssessment /> :
 		<div className="w-full">
-			<Widget1 data={widgets.widget1} />
-
+			<Widget1 data={widgets.widget1} DashboardData={WidgetOneDashboardData} />
+			<button onClick={changeUserName}>Chnage Name</button>
 			<FuseAnimate animation="transition.slideUpIn" delay={200}>
 				<div className="flex flex-col md:flex-row sm:p-8 container">
 					<div className="flex flex-1 flex-col min-w-0">
@@ -166,7 +166,7 @@ function AnalyticsDashboardApp({DashboardData}) {
 							<Typography className="px-16 pb-8 text-18 font-300">Where are your users?</Typography>
 						</FuseAnimate>
 
-						<div className="widget w-full p-16 pb-32">
+						<div className="widget w-full pt-16 pb-32">
 							<NewWidget10 />
 						</div>
 					</div>

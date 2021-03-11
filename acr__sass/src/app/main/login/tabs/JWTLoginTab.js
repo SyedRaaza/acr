@@ -16,8 +16,6 @@ import {Link} from 'react-router-dom';
 import { setUser } from '../../../store/redux/index';
 import history from '@history';
 import {getToken} from "app/services/backendAPI/APIConfigs";
-import { setNewSettings } from 'app/store/fuse/settingsSlice';
-import { lightBlue, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -53,8 +51,6 @@ function JWTLoginTab({loginData , newUser}) {
 	const [showData, setshowData]=useState(false);
 	const [length , setLength] = useState(4);
 	const [passwordError , setPasswordError] = useState("Length should be 4");
-	const settings = useSelector(({ fuse }) => fuse.settings.current);
-	const userTheme = useSelector(state => state.newUserReducer.user)
 
 	const newuserDataOne = newUser.error;
 
@@ -83,7 +79,7 @@ const Emaildata = data => {
 			setPosts(response.data.data)
 		})
 		.catch(error => {
-			console.log(error.response)
+			console.log("error")
 		});
 	})
 };
@@ -133,43 +129,16 @@ const Emaildata = data => {
 	}
 
 
-	var customizeTheme = {
-		palette: {
-			type: 'light',
-			primary: {
-				light: '#b3d1d1',
-				main: '#006565',
-				dark: '#003737'
-			},
-			secondary: {
-				light: '#ffecc0',
-				main: '#FFBE2C',
-				dark: '#ff9910',
-				contrastText: '#272727'
-			},
-			background: {
-				paper: '#FFFFFF',
-				default: '#F0F7F7'
-			},
-			error: red
-		},
-		status: {
-			danger: 'green'
-		}
-	}
-
-
 	useEffect(() => {
+		
 		if(newuserDataOne == true) {
 			setLength(100)
 			setPasswordError(true)
 		}
 		else if (newuserDataOne == false) {
 			getToken(newUser.data)
-			customizeTheme = newUser.data[0].organization_data.color_schemes
-			//alert(JSON.stringify(customizeTheme))
 		}
-	},[newuserDataOne , customizeTheme])
+	},[newuserDataOne])
 	
 
 	const handleChanges = event => {
@@ -178,20 +147,6 @@ const Emaildata = data => {
 	   	Emaildata(value);
 	}
 
-
-	function handleSchemeSelect(themeId) {
-		const newSettings = {
-			...settings,
-			theme: {
-				main: themeId,
-				navbar: themeId,
-				toolbar: themeId,
-				footer: themeId
-			},
-            customizeTheme
-		};
-		dispatch(setNewSettings(newSettings));
-	}
 
 	return (
 		<div className="w-full">
@@ -297,7 +252,6 @@ const Emaildata = data => {
 }
 
 const mapStateToProps = state => {
-console.log(state)
 	return {
 		loginData: state.auth,
 		newUser: state.newUserReducer.user

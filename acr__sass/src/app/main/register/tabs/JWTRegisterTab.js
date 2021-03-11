@@ -120,28 +120,25 @@ function JWTRegisterTab({userData}) {
 	}
 
 
-	const isSubDomainSame = (model) => {
+	// const isSubDomainSame = (model) => {
 
-		// if(email || businessEmail == undefined) {
-		// 	//console.log(email , businessEmail)
-		// }
-		// else {
-		// 	let subDomOne = model.email.split("@");
-		// 	let subDomTwo = model.business_email.split("@")
+	// 	// if(email || businessEmail == undefined) {
+	// 	// 	//console.log(email , businessEmail)
+	// 	// }
+	// 	// else {
+	// 	// 	let subDomOne = model.email.split("@");
+		
+	// 	// 	let subDomTwo = model.business_email.split("@")
 
-		// 	//console.log(subDomOne , subDomTwo);
-		// }
-		//console.log(model)
+	// 	// 	//console.log(subDomOne , subDomTwo);
+	// 	// }
+	// 	//console.log(model)
 
-	};
+	// };
 
-	useEffect(() => {
-		//console.log(email)
-		//console.log(businessEmail)
-		//console.log(firstDomain , secondDomain)
-
-		isSubDomainSame()
-	},[email , businessEmail])
+	// useEffect(() => {
+	// 	isSubDomainSame()
+	// },[email , businessEmail])
 
 	return (
 		<React.Fragment>
@@ -363,20 +360,9 @@ function JWTRegisterTab({userData}) {
 }
 
 const mapStateToProps = state => {
-  //console.log(state)
     return {
         userData: state.auth,
-        //cisData: state.cisReducer,
     }
 }
-
-// const mapDispatchToProps = dispatch => {
-//     //console.log(dispatch)
-//     return {
-//         getUsers: () => dispatch(getUsers()),
-//         reduce: () => dispatch(reduceCake()),
-//         getCis: () => dispatch(getCisData())
-//     }
-// }
 
 export default connect(mapStateToProps)(JWTRegisterTab);

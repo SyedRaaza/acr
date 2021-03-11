@@ -1,3 +1,4 @@
+import React , {Suspense} from 'react';
 import MomentUtils from '@date-io/moment';
 import '@fake-db';
 import FuseAuthorization from '@fuse/core/FuseAuthorization';
@@ -9,7 +10,6 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { create } from 'jss';
 import jssExtend from 'jss-plugin-extend';
 import rtl from 'jss-rtl';
-import React from 'react';
 import Provider from 'react-redux/es/components/Provider';
 import { Router } from 'react-router-dom';
 import AppContext from './AppContext';
@@ -36,7 +36,6 @@ const App = () => {
 		setView(false)
 	}
 	return (
-		<React.Fragment>
 			<AppContext.Provider
 				value={{
 					routes
@@ -59,7 +58,6 @@ const App = () => {
 					</Provider>
 				</StylesProvider>
 			</AppContext.Provider>
-		</React.Fragment>
 	);
 };
 

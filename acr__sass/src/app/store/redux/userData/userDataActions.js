@@ -11,6 +11,13 @@ export const setNewUser = user => {
     }
 }
 
+export const updateUser = updateName => {
+    return {
+        type: "UPDATE_USER",
+        payload: updateName
+    }
+}
+
 
 
 export const setUser = (data) => {

@@ -1,17 +1,14 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import _ from '@lodash';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import Button from '@material-ui/core/Button';
 import { makeStyles, ThemeProvider, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { useState , useEffect } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { connect, useSelector , useDispatch } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import { selectContrastMainTheme } from 'app/store/fuse/settingsSlice';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { setNewSettings } from 'app/store/fuse/settingsSlice';
-import { lightBlue, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -20,62 +17,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Widget1(props) {
+	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const theme = useTheme();
-	const dispatch = useDispatch();
 	const contrastTheme = useSelector(selectContrastMainTheme(theme.palette.primary.main));
 	const [loading , setLoading] = useState(true)
 	const [controImplementationData , setControlImplementationData] = useState({})
 	const [controImplementationLabel , setControlImplementationLabel] = useState({})
-	const [dataset, setDataset] = useState('2017');
 	const data = _.merge({}, props.data);
-	const settings = useSelector(({ fuse }) => fuse.settings.current);
-	const userTheme = useSelector(state => state.newUserReducer.user)
-
 	const {DashboardData} = props;
 
 	_.setWith(data, 'options.plugins.xLabelsOnTop.fontColor', fade(theme.palette.primary.contrastText, 0.7));
 	_.setWith(data, 'options.plugins.xLabelsOnTop.borderColor', fade(theme.palette.primary.contrastText, 0.6));
 	_.setWith(data, 'options.scales.xAxes[0].ticks.fontColor', theme.palette.primary.contrastText);
-
-	var customizeTheme = {
-		palette: {
-			type: 'light',
-			primary: {
-				light: '#b3d1d1',
-				main: '#006565',
-				dark: '#003737'
-			},
-			secondary: {
-				light: '#ffecc0',
-				main: '#FFBE2C',
-				dark: '#ff9910',
-				contrastText: '#272727'
-			},
-			background: {
-				paper: '#FFFFFF',
-				default: '#F0F7F7'
-			},
-			error: red
-		},
-		status: {
-			danger: 'green'
-		}
-	}
-
-	function handleSchemeSelect(themeId) {
-		const newSettings = {
-			...settings,
-			theme: {
-				main: themeId,
-				navbar: themeId,
-				toolbar: themeId,
-				footer: themeId
-			},
-            customizeTheme
-		};
-		dispatch(setNewSettings(newSettings));
-	}
 
 	useEffect(() => {
 
@@ -116,10 +70,8 @@ function Widget1(props) {
 				setControlImplementationLabel([])
 			}
 		}
-		customizeTheme = userTheme.data[0].organization_data.color_schemes
-		handleSchemeSelect("TenantTheme")
 		
-	},[DashboardData.loading , DashboardData.cisDashboard , userTheme])
+	},[DashboardData.loading , DashboardData.cisDashboard ])
 
 	if (loading) {
 		return <FuseLoading />;
@@ -140,20 +92,6 @@ function Widget1(props) {
 							</Typography>
 						</div>
 					</FuseAnimate>
-
-					{/* <div className="flex flex-row items-left">
-						{Object.keys(data.datasets).map(key => (
-							<Button
-								key={key}
-								className="py-8 px-12"
-								size="small"
-								onClick={() => setDataset(key)}
-								disabled={key === dataset}
-							>
-								{key}
-							</Button>
-						))}
-					</div> */}
 				</div>
 				<div className="container relative h-200 sm:h-256 pb-16">
 					<Bar
@@ -169,7 +107,15 @@ function Widget1(props) {
 								pointHoverBorderColor: theme.palette.secondary.contrastText
 							}))
 						}}
+						onElementsClick={elem => {
+							let bar_index = elem[0]._index;
+							console.log(elem);
+							console.log(elem[0]._index)
+							console.log(elem[0]._model.label)
+							console.log(elem[0]._chart.config.data.datasets[0].data[bar_index])
+						  }}
 						options={{
+							"indexAxis": 'x',
 							"spanGaps":false,
 							"legend":{"display":false},
 							"maintainAspectRatio":false,
@@ -180,6 +126,7 @@ function Widget1(props) {
 							"scales":{
 								"xAxes":[{
 									"gridLines":{"display":false,"drawBorder":false,"tickMarkLength":18},
+									"stacked":true,
 									"ticks":{"fontColor":"#fff" , "fontSize": 8},
 								}],
 								"yAxes":[{"display":false,"ticks":{"min":0,"max":100,"stepSize":10}}]
@@ -193,9 +140,4 @@ function Widget1(props) {
 	);
 }
 
-const mapStateToProps = state => {
-	return {
-		DashboardData: state.cisDashboardDataReducer
-	}
-}
-export default connect(mapStateToProps)(React.memo(Widget1));
+export default React.memo(Widget1);

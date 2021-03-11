@@ -43,6 +43,12 @@ const navigationConfig = [
 								title: 'NIST',
 								type: 'item',
 								url: '/apps/dashboards/nist'
+							},
+							{
+								id: 'ios-dashboard',
+								title: 'ISO-27k',
+								type: 'item',
+								url: '/apps/dashboards/ISO'
 							}
 						]
 					},
@@ -90,6 +96,13 @@ const navigationConfig = [
 						type: 'item',
 						url: '/apps/maturity/nist',
 						exact: true
+					},
+					{
+						id: 'ISO_Maturity',
+						title: 'ISO 27k Maturity',
+						type: 'item',
+						url: '/apps/maturity/ISO',
+						//exact: true
 					},
 					// {
 					// 	id: 'e-commerce-new-product',

@@ -1,10 +1,8 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { useTheme } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
+import {Tab , Tabs , Button} from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -133,7 +131,6 @@ const Order = (props) => {
 
 
 	function handleChangeTab(event,value) {
-		console.log(value)
 		setTabValue(value);
 	}
 
@@ -143,8 +140,6 @@ const Order = (props) => {
 
 
 	const arr = Object.values(cisData.cis)
-	console.log(arr)
-	console.log(cisData)
 
 	function chunk(arr, chunkSize) {
 	if (chunkSize <= 0) throw "Invalid chunk size";
@@ -206,20 +201,6 @@ const Order = (props) => {
 									<span className="mx-4">CIS Maturity</span>
 								</Typography>
 							</FuseAnimate>
-
-							{/* <div className="flex flex-col min-w-0 items-center sm:items-start">
-								<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-									<Typography className="text-16 sm:text-20 truncate">
-										{`Order ${order.reference}`}
-									</Typography>
-								</FuseAnimate>
-
-								<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-									<Typography variant="caption">
-										{`From ${order.customer.firstName} ${order.customer.lastName}`}
-									</Typography>
-								</FuseAnimate>
-							</div> */}
 						</div>
 					</div>
 				)
@@ -281,51 +262,7 @@ const Order = (props) => {
 							<React.Fragment>
 
 							</React.Fragment>
-							// <div className="table-responsive">
-							// 	<table className="simple">
-							// 		<thead>
-							// 			<tr>
-							// 				<th>ID</th>
-							// 				<th>Image</th>
-							// 				<th>Name</th>
-							// 				<th>Price</th>
-							// 				<th>Quantity</th>
-							// 			</tr>
-							// 		</thead>
-							// 		<tbody>
-							// 			{order.products.map(product => (
-							// 				<tr key={product.id}>
-							// 					<td className="w-64">{product.id}</td>
-							// 					<td className="w-80">
-							// 						<img className="product-image" src={product.image} alt="product" />
-							// 					</td>
-							// 					<td>
-							// 						<Typography
-							// 							component={Link}
-							// 							to={`/apps/e-commerce/products/${product.id}`}
-							// 							className="truncate"
-							// 							style={{
-							// 								color: 'inherit',
-							// 								textDecoration: 'underline'
-							// 							}}
-							// 						>
-							// 							{product.name}
-							// 						</Typography>
-							// 					</td>
-							// 					<td className="w-64 text-right">
-							// 						<span className="truncate">${product.price}</span>
-							// 					</td>
-							// 					<td className="w-64 text-right">
-							// 						<span className="truncate">{product.quantity}</span>
-							// 					</td>
-							// 				</tr>
-							// 			))}
-							// 		</tbody>
-							// 	</table>
-							// </div>
 						)}
-						{/* Invoice */}
-						{/* {tabValue === 2 && <OrderInvoice order={order} />} */}
 						{tabValue === 2 && (
 							tabsData ?
 						<React.Fragment>

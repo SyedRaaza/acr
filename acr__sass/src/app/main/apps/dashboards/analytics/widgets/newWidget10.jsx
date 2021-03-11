@@ -32,7 +32,7 @@ function NewWidget10({at_ck_data}) {
 	return (
 		<Paper className="w-full rounded-8 shadow">
 			<div className="flex items-center justify-between px-16 h-64 border-b-1">
-				<Typography className="text-16">AT&CK Activity Summary</Typography>
+				<Typography color="text-primary" className="text-16">AT&CK Activity Summary</Typography>
 			</div>
 			<div className="table-responsive">
 				<Table className="w-full min-w-full">
