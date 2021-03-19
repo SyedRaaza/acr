@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 		position: 'relative',
 		flex: '1 0 auto',
 		height: 'auto',
-		backgroundColor: theme.palette.background.default
+		backgroundColor: theme.palette.background.paper
 	},
 	innerScroll: {
 		flex: '1 1 auto',
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 		maxWidth: '100%',
 		minWidth: 0,
 		height: '100%',
-		backgroundColor: theme.palette.background.default
+		backgroundColor: theme.palette.background.paper
 	},
 	header: {
 		height: headerHeight,

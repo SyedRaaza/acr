@@ -4,8 +4,7 @@ import {Button , Typography} from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 import {useSelector , useDispatch} from "react-redux";
 import { setNewSettings } from 'app/store/fuse/settingsSlice';
-import { fuseDark, skyBlue } from '@fuse/colors';
-import { lightBlue, red } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 import {DropzoneArea} from 'material-ui-dropzone'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -31,8 +30,8 @@ function Branding(props) {
         secondary_main: userPersonalColorScheme.palette.secondary.main,
         secondary_dark: userPersonalColorScheme.palette.secondary.dark,
         secondary_contrastText: userPersonalColorScheme.palette.secondary.contrastText,
-        background_paper: userPersonalColorScheme.palette.background_paper,
-        background_default: userPersonalColorScheme.palette.background_default,
+        background_paper: userPersonalColorScheme.palette.background.paper,
+        background_default: userPersonalColorScheme.palette.background.default,
 
 	  });
 

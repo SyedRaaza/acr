@@ -42,7 +42,7 @@ function DoughnutWidget({doughnutData}) {
         )
     }
 	return (
-		<Paper className="w-full rounded-8 shadow">
+		<Paper className="w-full rounded-8 shadow overflow-x-hidden">
 			<div className="flex items-center justify-between px-16 h-64 border-b-1">
 				<Typography className="text-16">Implementation Group Scores</Typography>
 			</div>

@@ -9,6 +9,10 @@ import newUserReducer from './redux/userData/userDataReducer';
 import cisMaturityDataReducer from './redux/CISMaturityData/CISMaturityDataReducer';
 import cisDashboardDataReducer from './redux/dashboardCis/dashboardCisReducer';
 import showAssessmentDataReducer from './redux/ShowAssessment/showAssessmentReducer';
+import isoReducer from './redux/ISO/isoReducer';
+import isoShowAssessmentReducer from './redux/showISOAssessment/showISOAssessment__Reducer';
+import isoDashboardReducer from './redux/ISODashboard/ISODashboardReducer';
+import isoSingleAssessmentReducer from './redux/ISOShowSingleAssessment/ISOShowSingleAssessmentReducer';
 
 const createReducer = asyncReducers => (state, action) => {
 	const combinedReducer = combineReducers({
@@ -22,6 +26,10 @@ const createReducer = asyncReducers => (state, action) => {
 		cisMaturityDataReducer,
 		cisDashboardDataReducer,
 		showAssessmentDataReducer,
+		isoReducer,
+		isoShowAssessmentReducer,
+		isoDashboardReducer,
+		isoSingleAssessmentReducer,
 		...asyncReducers
 	});
 

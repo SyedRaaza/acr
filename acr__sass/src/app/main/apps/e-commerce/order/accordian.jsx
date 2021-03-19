@@ -5,8 +5,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {getUsers , reduceCake , getCisData} from '../../../../store/redux/index';
-import {connect , useSelector , useDispatch} from 'react-redux';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -70,7 +68,6 @@ const AccordionComponent = ({cisData}) => {
   };
 
   const handleChangeSelect = (event) => {
-    console.log(select)
     
     const name = event.target.name;
     setSelect({
@@ -97,14 +94,11 @@ const AccordionComponent = ({cisData}) => {
     .catch(err => {
       console.log(err + "from Patch")
     })
-    //updateStore()
   }
 
   // if (_.isEmpty(widgets)) {
 	// 	return null;
 	// }
-
-console.log(cisData);
   return (
     <div className={classes.root}>
         {/* <button onClick={reduce}>Reduce</button> */}

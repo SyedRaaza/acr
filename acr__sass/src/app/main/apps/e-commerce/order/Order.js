@@ -89,7 +89,6 @@ const Order = (props) => {
 	}
 	else {
 		cisMainData = cisData.cis[0].controls;
-		console.log(cisMainData)
 	}
 
 	const changeTabDataState = newState => {

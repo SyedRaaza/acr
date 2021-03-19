@@ -675,9 +675,7 @@ const themesConfig = {
 };
 
 export const addTheme = theme => {
-	//alert(JSON.stringify(theme))
-	//alert(JSON.stringify(themesConfig))
-	themesConfig[name] = theme
+	console.log("Theme Config")
 }
 
 export default themesConfig;

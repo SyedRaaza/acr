@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import reducer from './store';
 import { selectProjects, getProjects } from './store/projectsSlice';
-
+import {NoAssessment} from '../analytics/AnalyticsDashboardApp';
 import { getWidgets, selectWidgets } from './store/widgetsSlice';
 
 import Widget1 from './widgets/Widget1';
@@ -61,6 +61,7 @@ function ProjectDashboardApp(props) {
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
 	const User = useSelector(({newUserReducer}) => newUserReducer.user.data[0])
+	const DashboardDataForChaeck = useSelector(state => state.cisDashboardDataReducer);
 
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -105,6 +106,7 @@ function ProjectDashboardApp(props) {
 	}
 
 	return (
+		DashboardDataForChaeck.assessment_list.length == 0 ? <NoAssessment /> :
 		<FusePageSimple
 			classes={{
 				header: 'min-h-160 h-160',

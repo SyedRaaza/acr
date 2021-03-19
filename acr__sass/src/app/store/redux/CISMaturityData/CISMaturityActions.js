@@ -33,7 +33,7 @@ export const getCisMaturityData = () => {
         .catch(err => {
             const Error = err;
             dispatch(cisMaturityDataFailure(Error))
-            alert(Error + "from CIS Maturity data")
+            console.log(Error + "from CIS Maturity data")
         })
     }
 };

@@ -11,8 +11,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import {useSelector , useDispatch} from 'react-redux';
 import axios from 'axios';
 import userServices from "../../../../services/backendAPI/userServices";
+import {updateAssessmentData} from '../../../../store/redux/index';
+import {Paper} from '@material-ui/core';
 import _ from '@lodash';
 
 
@@ -33,10 +36,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const masterData = {};
 
-const AssessmentsAccordion = ({cisData}) => {
+const AssessmentsAccordion = ({cisData , indexNumber}) => {
 
-
-
+  const dispatch = useDispatch();
   const [loading , setLoading] = useState(false)
   const [checked, setChecked] = useState({});
   const [expanded, setExpanded] = useState(false);
@@ -48,7 +50,7 @@ const AssessmentsAccordion = ({cisData}) => {
     ci_status: '',
     ca_status: '',
     cr_status: '',
-    is_applicable: true,
+    is_applicable: '',
     sub_control_id: 0
   });
 
@@ -58,7 +60,7 @@ const AssessmentsAccordion = ({cisData}) => {
 
   const handleChange = (panel) => (_event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-    console.log(masterData)
+    //console.log(masterData)
   };
 
   const handleChangeCheckBox = (event) => {
@@ -85,26 +87,18 @@ const AssessmentsAccordion = ({cisData}) => {
   }
 
   const makeAssesment = () => {
-    //alert(JSON.stringify(select) + "from make asses")
     axios.patch('/maturity/assessment/',select)
     .then(res => {
-      console.log(res)
-    //   dispatch(
-    //     showMessage({
-    //         message     : 'Data Updated!',//text or html
-    //         autoHideDuration: 6000,//ms
-    //         anchorOrigin: {
-    //             vertical  : 'top',//top bottom
-    //             horizontal: 'center'//left center right
-    //         },
-    //         variant: 'success'//success error info warning null
-    //     }))
+      console.log("res")
     })
     .catch(err => {
-      console.log(err + "from Patch")
+      console.log("Patch Error")
     })
   }
 
+  const updateAssessmentDataInRedux = data => {
+    dispatch(updateAssessmentData(data))
+  }
   // if (_.isEmpty(widgets)) {
 	// 	return null;
 	// }
@@ -117,12 +111,23 @@ const AssessmentsAccordion = ({cisData}) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
-            className=""
           >
             <div className="accordianSummary">
-            <p>{val.display_id}</p>
-            <p className="w-3/4 wrap">{val.details}</p>
-            <FormControlLabel className="z-50" control={<Checkbox color="secondary" onChange={handleChangeSelect} checked={val.is_applicable} id={key} name="is_applicable" value={true} />} label="Applicable" />
+              <p>{val.display_id}</p>
+              <div className="w-full text-left mx-24">
+                <p className="text-12 font-extrabold mb-6">Question:</p>
+                <Paper elevation={1}>
+                  <p className=" rounded p-12">{val.details}</p>
+                </Paper>
+              </div>
+            {/* <div className="controlContent--types">
+              <div className="impGroup text-left">
+              </div>
+            </div> */}
+            {/* <p className="w-3/4 wrap">{val.details}</p> */}
+            <FormControlLabel className="z-50" control={<Checkbox color="secondary" checked={val.is_applicable} onChange={handleChangeSelect} id={key} name="is_applicable" value={select.is_applicable == '' ? true : select.is_applicable == "true" ? false : true} />} label="Applicable"
+            onClick={() => {updateAssessmentDataInRedux({controlIndex: indexNumber , subControlIndex: key , checkedState: !val.is_applicable})}}
+            />
             </div>
           </AccordionSummary>
           <AccordionDetails className="block">
@@ -131,15 +136,21 @@ const AssessmentsAccordion = ({cisData}) => {
               <div className="controlContent--detail">
                 <p>{val.detail}</p>
               </div>
-              <div className="controlContent--types grid grid-cols-2 gap-36 justify-center">
+              <div className="controlContent--types w-full grid grid-cols-3 gap-36 items-center justify-between mb-16">
                 <div className="impGroup">
                   <p>Implementation Group</p>
                   <p>{val.implementation_groups.toString()}</p>
                 </div>
                 <div className="baseLine">
+                  <p>NIST CSF Status</p>
+                  <p>{val.nist_csf_status}</p>
+                </div>
+                <div className="baseLine">
                   <p>Baseline</p>
                   <p>{val.sensor_baseline}</p>
                 </div>
+              </div>
+              <div className="controlContent--types grid grid-cols-2 gap-36 justify-center">
                 <div className="controlContent--types__policy">
                   <FormControl variant="filled" className={classes.formControl}>
                     <InputLabel htmlFor="outlined-age-native-simple">Policy Defined</InputLabel>

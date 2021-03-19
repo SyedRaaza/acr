@@ -156,8 +156,6 @@ const Order = (props) => {
 
 
 	const arr = Object.values(cisData.cis)
-	console.log(arr)
-	console.log(cisData)
 
 	function chunk(arr, chunkSize) {
 	if (chunkSize <= 0) throw "Invalid chunk size";
@@ -329,15 +327,18 @@ const Order = (props) => {
 									id="panel1bh-header"
 									>
 										<div className="accordianSummary">
-											<Typography noWrap >{val.display_id}</Typography>
-											<div className="text-left w-2/4">
-                                            <Typography noWrap className="text-left" >{val.details}</Typography>
-                                            </div>
+											<Typography>{val.display_id}</Typography>
+											
+											<div className="w-full text-left mx-24">
+												<p className="text-12 font-extrabold mb-6">Control Description</p>
+												<p className="border-2 rounded p-12">{val.details}</p>
+											</div>
+                                            
 											<Typography className="" noWrap ></Typography>
 										</div>
 									</AccordionSummary>
 									<AccordionDetails>
-									<AssessmentsAccordion cisData={val} />
+									<AssessmentsAccordion cisData={val} indexNumber={val.id - 1} />
 									</AccordionDetails>
 								</Accordion>
 								))}
@@ -367,7 +368,7 @@ const Order = (props) => {
 									</div>
 								</AccordionSummary>
 								<AccordionDetails>
-								<AssessmentsAccordion cisData={val} />
+								<AssessmentsAccordion cisData={val} indexNumber={val.id - 1}/>
 								</AccordionDetails>
 							</Accordion>
 							))}
@@ -398,7 +399,7 @@ const Order = (props) => {
                                         </div>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                    <AssessmentsAccordion cisData={val} />
+                                    <AssessmentsAccordion cisData={val} indexNumber={val.id - 1}/>
                                     </AccordionDetails>
                                 </Accordion>
                                 ))}
@@ -428,7 +429,7 @@ const Order = (props) => {
                                         </div>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                    <AssessmentsAccordion cisData={val} />
+                                    <AssessmentsAccordion cisData={val} indexNumber={val.id - 1}/>
                                     </AccordionDetails>
                                 </Accordion>
                                 ))}

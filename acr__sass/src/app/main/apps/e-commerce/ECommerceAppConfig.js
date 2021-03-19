@@ -13,7 +13,11 @@ const ECommerceAppConfig = {
 		},
 		{
 			path: '/apps/maturity/ISO',
-			component: React.lazy(() => import('./ISO/ISO_Maturity'))
+			component: React.lazy(() => import('./ISO/ISOShowAssessmentsComponent'))
+		},
+		{
+			path: '/apps/maturrity/ISO/add',
+			component: React.lazy(() => import('./ISO/ISOParentComponent'))
 		},
 		{
 			path: '/apps/maturity/cis',
@@ -30,6 +34,11 @@ const ECommerceAppConfig = {
 		{
 			path: '/apps/e-commerce',
 			component: () => <Redirect to="/apps/e-commerce/products" />
+		},
+		{
+			exact: true,
+			path: '/apps/iso/assessment',
+			component: React.lazy(() => import('./ISO/Assessments/ISOAssessments'))
 		}
 	]
 };

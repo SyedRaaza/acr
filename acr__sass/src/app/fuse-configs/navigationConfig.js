@@ -81,7 +81,7 @@ const navigationConfig = [
 				translate: 'Maturity Assesment',
 				type: 'collapse',
 				icon: 'assessment',
-				url: '/apps/maturity/cis',
+				url: '/apps/maturity',
 				children: [
 					{
 						id: 'e-commerce-products',
@@ -102,7 +102,7 @@ const navigationConfig = [
 						title: 'ISO 27k Maturity',
 						type: 'item',
 						url: '/apps/maturity/ISO',
-						//exact: true
+						exact: true
 					},
 					// {
 					// 	id: 'e-commerce-new-product',

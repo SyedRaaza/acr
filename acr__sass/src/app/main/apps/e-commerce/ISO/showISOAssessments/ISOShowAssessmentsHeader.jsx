@@ -1,24 +1,14 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import Input from '@material-ui/core/Input';
-import Paper from '@material-ui/core/Paper';
-import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setProductsSearchText } from '../store/productsSlice';
 import { useTheme } from '@material-ui/core/styles';
 
-function ProductsHeader(props) {
-	const dispatch = useDispatch();
-	const theme = useTheme();
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-	const mainTheme = useSelector(selectMainTheme);
+function ISOShowAssessmentHeader(props) {
 
-	
+	const theme = useTheme();
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -28,12 +18,21 @@ function ProductsHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						CIS Maturity Assesment
+						ISO Maturity Assesment
 					</Typography>
 				</FuseAnimate>
 			</div>
 			<FuseAnimate animation="transition.slideRightIn" delay={300}>
-					<Button
+                    <Button
+                        component={Link}
+                        to="/apps/maturrity/ISO/add"
+                        variant="contained"
+                        color="secondary"
+                    >
+                        <span className="hidden sm:flex">Add New Assesment</span>
+						<span className="flex sm:hidden">New</span>
+                    </Button>
+					{/* <Button
 						component={Link}
 						to="/apps/e-commerce/orders/1"
 						className="whitespace-nowrap"
@@ -42,10 +41,10 @@ function ProductsHeader(props) {
 					>
 						<span className="hidden sm:flex">Add New Assesment</span>
 						<span className="flex sm:hidden">New</span>
-					</Button>
+					</Button> */}
 			</FuseAnimate>
 		</div>
 	);
 }
 
-export default ProductsHeader;
+export default ISOShowAssessmentHeader;

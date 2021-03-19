@@ -30,11 +30,10 @@ import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
 import Icon from '@material-ui/core/Icon';
 import "../../../.././../styles/noAssessmentsPage.scss";
-import {updateUser} from '../../../../store/redux/index';
 
 
 
-const NoAssessment = () => {
+export const NoAssessment = () => {
 	return (
 		<div className="noAssessmentsPage">
 			<Icon className="text-9xl" color='primary'>
@@ -102,15 +101,10 @@ function AnalyticsDashboardApp({DashboardData}) {
 		dispatch(getUpdatedDashboardCisData({"assessment_id":event.target.value}))
 	};
 
-	const changeUserName = () => {
-		dispatch(updateUser("Usman"))
-	}
-
 	return (
 		DashboardData.assessment_list.length == 0 ? <NoAssessment /> :
 		<div className="w-full">
 			<Widget1 data={widgets.widget1} DashboardData={WidgetOneDashboardData} />
-			<button onClick={changeUserName}>Chnage Name</button>
 			<FuseAnimate animation="transition.slideUpIn" delay={200}>
 				<div className="flex flex-col md:flex-row sm:p-8 container">
 					<div className="flex flex-1 flex-col min-w-0">
@@ -179,21 +173,20 @@ function AnalyticsDashboardApp({DashboardData}) {
 								</Typography>
 							</FuseAnimate> */}
 
-							<div className="widget w-full p-16">
+							<div className="widget w-full p-14 pb-0 pt-0">
 								<Widget7 data={widgets.widget7} />
 							</div>
 						</div>
 
 						<div className="mb-32 w-full sm:w-1/2 md:w-full">
-
-							<div className="widget flex w-full p-12">
+							<div className="widget flex w-full p-12 pt-0">
 								<DoughnutWidget />
 							</div>
 						</div>
 
 						<div className="mb-32 w-full sm:w-1/2 md:w-full">
 							<FuseAnimate delay={600}>
-								<Typography className="px-16 pb-8 text-18 font-300 lg:pt-0">
+								<Typography className="px-16 text-18 font-300 lg:pt-0">
 									What is happening?
 								</Typography>
 							</FuseAnimate>
