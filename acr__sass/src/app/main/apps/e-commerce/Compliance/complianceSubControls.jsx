@@ -83,7 +83,7 @@ const ComplianceSubControls = ({Subcontrols}) => {
                     </AccordionSummary>
                     <AccordionDetails className="block">
                         <div className="controlContent">
-                            <div className="controlContent--types grid grid-cols-1 gap-36 justify-center">
+                            <div className="controlContent--types grid grid-cols-2 gap-36 justify-center">
                                 <div key={key} className="controlContent--types__policy">
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel htmlFor="outlined-age-native-simple">Current Status</InputLabel>

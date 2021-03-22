@@ -49,7 +49,22 @@ const navigationConfig = [
 								title: 'ISO-27k',
 								type: 'item',
 								url: '/apps/dashboards/ISO'
-							}
+							},
+
+						]
+					},
+					{
+						id: "compliance-assessment-dashboard",
+						title: "Compliance",
+						type: "collapse",
+						url: '/apps/dashboards',
+						children: [
+							{
+								id: 'analytics-dashboard',
+								title: 'ISO-27k',
+								type: 'item',
+								url: '/apps/dashboards/compliance/iso'
+							},
 						]
 					},
 					// {
@@ -104,35 +119,23 @@ const navigationConfig = [
 						url: '/apps/maturity/ISO',
 						exact: true
 					},
+				]
+			},
+			{
+				id: 'compliance',
+				title: 'Compliance Assesment',
+				translate: 'Compliance Assesment',
+				type: 'collapse',
+				icon: 'assessment',
+				url: '/apps/compliance',
+				children: [
 					{
-						id: 'Compliance-Maturity',
-						title: 'Compliance Maturity',
+						id: 'compliance-assessment',
+						title: 'ISO-27k Compliance',
 						type: 'item',
-						url: '/apps/maturity/compliance',
+						url: '/apps/compliance/iso',
 						exact: true
 					},
-					// {
-					// 	id: 'e-commerce-new-product',
-					// 	title: 'ANS',
-					// 	type: 'item',
-					// 	url: '/apps/e-commerce/products/new',
-					// 	exact: true
-					// },
-					// {
-					// 	id: 'e-commerce-orders',
-					// 	title: 'Orders',
-					// 	type: 'item',
-					// 	url: '/apps/e-commerce/orders',
-					// 	exact: true
-					// },
-					//ANS Nav Item is here
-					// {
-					// 	id: 'e-commerce-order-detail',
-					// 	title: 'ANS',
-					// 	type: 'item',
-					// 	url: '/apps/e-commerce/orders/1',
-					// 	exact: true
-					// }
 				]
 			},
 			// {

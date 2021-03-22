@@ -107,13 +107,13 @@ function Widget1(props) {
 								pointHoverBorderColor: theme.palette.secondary.contrastText
 							}))
 						}}
-						onElementsClick={elem => {
-							let bar_index = elem[0]._index;
-							console.log(elem);
-							console.log(elem[0]._index)
-							console.log(elem[0]._model.label)
-							console.log(elem[0]._chart.config.data.datasets[0].data[bar_index])
-						  }}
+						// onElementsClick={elem => {
+						// 	let bar_index = elem[0]._index;
+						// 	console.log(elem);
+						// 	console.log(elem[0]._index)
+						// 	console.log(elem[0]._model.label)
+						// 	console.log(elem[0]._chart.config.data.datasets[0].data[bar_index])
+						//   }}
 						options={{
 							"indexAxis": 'x',
 							"spanGaps":false,

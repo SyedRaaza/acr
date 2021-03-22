@@ -25,17 +25,29 @@ function ISOAssessmentsTable (props) {
 	const [loading, setLoading] = useState(true);
 	const [rowsPerPage , setRowsPerPage] = useState(5);
 	const [page , setPage] = useState(0);
+	const [pageOffset , setPageOffset] = useState(0)
+	const [limit , setLimit] = useState(5)
+	const [previousPageOffset , setPreviousPageOffset] = useState()
     const assessmentData = useSelector(state => state.isoShowAssessmentReducer);
 
+	let paramsData = {
+		limit: limit,
+		offSet: pageOffset
+	}
+
 	useEffect(() => {
-		dispatch(getISOAssessmentData());
 		if(assessmentData.loading == true) {
 			setLoading(true)
 		}
 		else if(assessmentData.loading == false) {
 			setLoading(false)
+			setPageOffset(0)
 		}
 	},[assessmentData.loading])
+
+	useEffect(() => {
+		dispatch(getISOAssessmentData(paramsData));
+	} , [dispatch , pageOffset])
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -45,6 +57,17 @@ function ISOAssessmentsTable (props) {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
 	};
+
+	const nextPage = () => {
+		let newPageOffset = pageOffset + 5
+		setPageOffset(newPageOffset)
+		console.log(pageOffset)
+		//dispatch(getISOAssessmentData(paramsData));
+	}
+
+	const previousPage = () => {
+		setPageOffset(pageOffset - 5)
+	}
 
 	if (loading) {
 		return <FuseLoading />;
@@ -101,8 +124,7 @@ function ISOAssessmentsTable (props) {
                     </TableHead>
 
 					<TableBody>
-						{assessmentData.isoShowAssessment
-						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+						{assessmentData.isoShowAssessment.data
 						.map((val , key) => (							
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -143,15 +165,18 @@ function ISOAssessmentsTable (props) {
 			<TablePagination
 				className="flex-shrink-0 border-t-1"
 				component="div"
-				rowsPerPageOptions={[5 , 10 , 15]}
-				count={assessmentData.isoShowAssessment.length}
+				rowsPerPageOptions={[]}
+				//labelRowsPerPage=''
+				count={assessmentData.isoShowAssessment.count}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				backIconButtonProps={{
-					'aria-label': 'Previous Page'
+					'aria-label': 'Previous Page',
+					onClick: previousPage
 				}}
 				nextIconButtonProps={{
-					'aria-label': 'Next Page'
+					'aria-label': 'Next Page',
+					onClick: nextPage
 				}}
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -161,4 +186,4 @@ function ISOAssessmentsTable (props) {
 }
 
 
-export default ISOAssessmentsTable;
+export default React.memo(ISOAssessmentsTable);
