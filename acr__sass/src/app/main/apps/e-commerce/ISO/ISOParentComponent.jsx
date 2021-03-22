@@ -3,11 +3,12 @@ import {useDispatch} from 'react-redux';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import {Link} from 'react-router-dom';
-import {Button , Tab , Tabs , Typography , Icon , Accordion , AccordionDetails , AccordionSummary , Card} from '@material-ui/core';
+import {Button , Tab , Tabs , Typography , Icon , Card} from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import ISOMaturity from "./ISO_Maturity";
 import ISOMandatory from "./ISO_Mandatory";
 import { isoResetSingleAssessment } from "../../../../store/redux/index";
+import AssesmentInfoFormISO from './assessmentInfoForm';
 
 
 function ISOParentControls(props) {
@@ -15,6 +16,7 @@ function ISOParentControls(props) {
     const theme = useTheme();
     const dispatch = useDispatch();
     const [tabValue, setTabValue] = useState(0);
+    const [layout , setLayout] = useState(true);
     const [tabsData , setTabsData] = useState(false);
     const [disable , setDisable] = useState(false);
     const [expanded, setExpanded] = useState(false);
@@ -30,6 +32,10 @@ function ISOParentControls(props) {
     const handleChange = (panel) => (event, isExpanded) => {
 		setExpanded(isExpanded ? panel : false);
 	};
+
+    const changeLayout = () => {
+        setLayout(false)
+    }
 
     return (
         <FusePageCarded 
@@ -51,13 +57,20 @@ function ISOParentControls(props) {
                                 <Icon className="text-20">
                                     {theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
                                 </Icon>
-                                <span className="mx-4">ISO 2700 Maturity</span>
+                                <span className="mx-4">ISO 27000 Maturity</span>
                             </Typography>
                         </FuseAnimate>
                     </div>
                 </div>
             }
             contentToolbar={
+                layout ? 
+                <Typography
+                    color="inherit"
+                >
+                    <span className="mx-36 font-medium">Assessment Information</span>
+                </Typography>
+                :
                 <Tabs
 					value={tabValue}
 					onChange={handleChangeTab}
@@ -72,6 +85,14 @@ function ISOParentControls(props) {
 				</Tabs>
             }
             content={
+                layout ? 
+                <div className="p-16 sm:p-24 max-w-2xl w-full rounded-lg">
+                    <div className="tab1">
+                        {/* <AssesmentInfoFormISO changeTab={handleChangeTab} nextTab={1} handleEnableTabs={handleEnableTabs} /> */}
+                        <AssesmentInfoFormISO handleEnableTabs={changeLayout} />
+                    </div>
+                </div>
+                :
                 <div className="p-16 sm:p-24 max-w-2xl w-full">
                     {tabValue === 0 && (
                         <div className="tab1">

@@ -28,14 +28,15 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
+  
+const ComplianceSubControls = ({Subcontrols}) => {
 
     const theme  = useTheme();
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const [select, setSelect] = useState({
-        pd_status: '',
-        ci_status: '',
+        cml_status: '',
+        dml_status: '',
         ca_status: '',
         cr_status: '',
         is_applicable: true,
@@ -55,9 +56,10 @@ const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
     };
 
     const updateAssessment = data => {
+        console.log(data)
         console.log(select.pd_status)
         axios.patch("/maturity/iso/assessment/" ,
-        { type:"requirement", question_id:data.id , status_selection: select.pd_status })
+        { type:"control", question_id:data  , status_selection: select.pd_status})
         .then(res => console.log(res))
         .catch(err => console.log(err))
     };
@@ -65,7 +67,7 @@ const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
     return (
         <React.Fragment>
               <div className={classes.root}>
-                {ISOSubcontrolsData__subcontrols.map((val , key) => (
+                {Subcontrols.sub_controls.map((val , key) => (
                     <Accordion style={{margin: "0.4rem 0 0.4rem 0" }} key={key} key={key} expanded={expanded === val.id} onChange={handleChange(val.id)}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -74,8 +76,8 @@ const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
                         className=""
                     >
                         <div className="accordianSummary">
-                            <p className="text-14">{val.display_id}</p>
-                            <p className="capitalize text-14">{val.details}</p>
+                            <p className="text-14">{val.id}</p>
+                            <p className="capitalize text-14 font-bold">{val.question}</p>
                             <p className="invisible">##########</p>
                         </div>
                     </AccordionSummary>
@@ -87,15 +89,34 @@ const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
                                         <InputLabel htmlFor="outlined-age-native-simple">Current Status</InputLabel>
                                         <Select
                                         native
-                                        value={select.pd_status}
+                                        value={select.cml_status}
                                         onChange={handleChangeSelect}
                                         label="Current Status"
                                         inputProps={{
-                                            name: 'pd_status',
+                                            name: 'dml_status',
                                             id: val.id,
                                         }}
                                         >
-                                        {val.status.map((val_sts , key) => (
+                                        {val.cml.map((val_sts , key) => (
+                                            <option key={key} className="selectOptions" value={val_sts}>{val_sts}</option>
+                                        ))}
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                <div key={key} className="controlContent--types__policy">
+                                    <FormControl variant="outlined" className={classes.formControl}>
+                                        <InputLabel htmlFor="outlined-age-native-simple">Current Status</InputLabel>
+                                        <Select
+                                        native
+                                        value={select.dml_status}
+                                        onChange={handleChangeSelect}
+                                        label="Current Status"
+                                        inputProps={{
+                                            name: 'dml_status',
+                                            id: val.id,
+                                        }}
+                                        >
+                                        {val.dml.map((val_sts , key) => (
                                             <option key={key} className="selectOptions" value={val_sts}>{val_sts}</option>
                                         ))}
                                         </Select>
@@ -108,7 +129,7 @@ const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
                                 className="whitespace-nowrap"
                                 variant="contained"
                                 color="secondary"
-                                onClick={() => { updateAssessment({id:val.id , status:val.status_selection}) ; alert(val.id) }}
+                                //onClick={() => { updateAssessment(val.id) }}
                             >
                                 <span>Save</span>
                             </Button>
@@ -122,4 +143,4 @@ const ISOSubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
     );
 }
 
-export default ISOSubControlsOfSubControls;
+export default ComplianceSubControls;

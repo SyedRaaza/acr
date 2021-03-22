@@ -98,10 +98,17 @@ const navigationConfig = [
 						exact: true
 					},
 					{
-						id: 'ISO_Maturity',
+						id: 'ISO-Maturity',
 						title: 'ISO 27k Maturity',
 						type: 'item',
 						url: '/apps/maturity/ISO',
+						exact: true
+					},
+					{
+						id: 'Compliance-Maturity',
+						title: 'Compliance Maturity',
+						type: 'item',
+						url: '/apps/maturity/compliance',
 						exact: true
 					},
 					// {

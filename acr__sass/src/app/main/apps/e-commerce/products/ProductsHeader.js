@@ -38,7 +38,7 @@ function ProductsHeader(props) {
 						to="/apps/e-commerce/orders/1"
 						className="whitespace-nowrap"
 						variant="contained"
-						color={theme.palette.primary.main}
+						color="secondary"
 					>
 						<span className="hidden sm:flex">Add New Assesment</span>
 						<span className="flex sm:hidden">New</span>

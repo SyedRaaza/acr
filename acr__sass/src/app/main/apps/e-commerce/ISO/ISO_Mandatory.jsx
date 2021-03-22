@@ -5,7 +5,6 @@ import { useTheme } from '@material-ui/core/styles';
 import {Button , Tab , Tabs , Typography , Icon , Accordion , AccordionDetails , AccordionSummary, Card} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ISOMandatorySubControls from './IOS_Mandatory_SubControls';
-import AssesmentInfoFormISO from './assessmentInfoForm';
 import FuseLoading from '@fuse/core/FuseLoading';
 
 const ButtonNext = ({changeTab , nextTab , btnText="NEXT"}) => {
@@ -16,7 +15,7 @@ const ButtonNext = ({changeTab , nextTab , btnText="NEXT"}) => {
 				className="whitespace-nowrap"
 				variant="contained"
 				color="secondary"
-				onClick={() => changeTab(undefined , nextTab)}
+				onClick={() => {changeTab(undefined , nextTab)}}
 			>
 				<span className="sm:flex">{btnText}</span>
 			</Button>
@@ -32,9 +31,9 @@ const ISOMandatory = (props) => {
     const [tabsData , setTabsData] = useState(false);
     const [disable , setDisable] = useState(false);
     const [expanded, setExpanded] = useState(false);
+    const [ISOMandatoryDataControls , setISOMandatoryDataControls] = useState([]);
     const ISOMandatoryData = useSelector(state => state.isoReducer);
     const ISOMandatoryDataForDisplayAssessment = useSelector(state => state.isoSingleAssessmentReducer.isoAssessmentSingle);
-    const [ISOMandatoryDataControls , setISOMandatoryDataControls] = useState([]);
 
     function handleChangeTab(event,value) {
 		setTabValue(value);
@@ -47,6 +46,10 @@ const ISOMandatory = (props) => {
     const handleChange = (panel) => (event, isExpanded) => {
 		setExpanded(isExpanded ? panel : false);
 	};
+
+    const handleDisable = () => {
+        setDisable(false)
+    }
 
     const dummyMandatoryData = [
         {
@@ -226,7 +229,6 @@ const ISOMandatory = (props) => {
 					classes={{ root: 'w-full h-64' }}
                     className="border-b-1"
 				>
-					<Tab className="h-64" label="Assesment Information" />
 					<Tab className="h-64" label="Clause 4-5" disabled={disable} onClick={() => {changeTabDataState(true)}} />
 					<Tab className="h-64" label="Clause 6-7" disabled={disable} />
 					<Tab className="h-64" label="Clause 8-9" disabled={disable} />
@@ -235,12 +237,6 @@ const ISOMandatory = (props) => {
             content={
                 <div className="p-16 sm:p-24 max-w-2xl w-full rounded-lg">
                     {tabValue === 0 && (
-                        <div className="tab1">
-                            {/* <AssesmentInfoFormISO changeTab={handleChangeTab} nextTab={1} handleEnableTabs={handleEnableTabs} /> */}
-                            <AssesmentInfoFormISO changeTab={handleChangeTab} nextTab={1} />
-                        </div>
-                    )}
-                    {tabValue === 1 && (
                         loading ? <FuseLoading /> :
                         <React.Fragment>
                             {controlOneToTwo.map((val , key) => (
@@ -260,14 +256,13 @@ const ISOMandatory = (props) => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ISOMandatorySubControls ISOMandatorySubcontrolsData={val.sub_requirements} />
-                                    <h1>Details</h1>
                                 </AccordionDetails>
                             </Accordion>
                             ))}
                             <ButtonNext changeTab={handleChangeTab} nextTab={2} />
                         </React.Fragment>
                     )}
-                    {tabValue === 2 && (
+                    {tabValue === 1 && (
                         loading ? <FuseLoading /> :
                         <React.Fragment>
                             {controlThreeToFour.map((val , key) => (
@@ -294,7 +289,7 @@ const ISOMandatory = (props) => {
                             <ButtonNext changeTab={handleChangeTab} nextTab={2} />
                         </React.Fragment>
                     )}
-                    {tabValue === 3 && (
+                    {tabValue === 2 && (
                         loading ? <FuseLoading /> :
                         <React.Fragment>
                             {controlFiveToSix.map((val , key) => (
@@ -314,7 +309,6 @@ const ISOMandatory = (props) => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ISOMandatorySubControls ISOMandatorySubcontrolsData={val.sub_requirements} />
-                                    <h1>Details</h1>
                                 </AccordionDetails>
                             </Accordion>
                             ))}

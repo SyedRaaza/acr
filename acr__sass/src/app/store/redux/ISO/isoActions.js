@@ -34,9 +34,7 @@ export const getISOData = data => {
         .then(res => {
             const resData = res.data.data;
             dispatch(isoCreateDataSuccess(resData))
-            alert("res")
         })
         .catch(err => dispatch(ISO_CREATE_DATA_FAILURE(err)))
-        alert("error")
     }
 }

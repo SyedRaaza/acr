@@ -39,6 +39,12 @@ const ECommerceAppConfig = {
 			exact: true,
 			path: '/apps/iso/assessment',
 			component: React.lazy(() => import('./ISO/Assessments/ISOAssessments'))
+		},
+		{
+			exact: true,
+			path: '/apps/maturity/compliance',
+			component: React.lazy(() => import('./Compliance/ComplianceParentComponent'))
+
 		}
 	]
 };

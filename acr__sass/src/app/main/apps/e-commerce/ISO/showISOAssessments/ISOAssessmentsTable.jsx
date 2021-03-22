@@ -22,8 +22,10 @@ import {useTheme} from "@material-ui/core/styles";
 function ISOAssessmentsTable (props) {
 	const theme = useTheme();
 	const dispatch = useDispatch();
-    const assessmentData = useSelector(state => state.isoShowAssessmentReducer);
 	const [loading, setLoading] = useState(true);
+	const [rowsPerPage , setRowsPerPage] = useState(5);
+	const [page , setPage] = useState(0);
+    const assessmentData = useSelector(state => state.isoShowAssessmentReducer);
 
 	useEffect(() => {
 		dispatch(getISOAssessmentData());
@@ -35,6 +37,14 @@ function ISOAssessmentsTable (props) {
 		}
 	},[assessmentData.loading])
 
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = event => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	};
 
 	if (loading) {
 		return <FuseLoading />;
@@ -91,7 +101,9 @@ function ISOAssessmentsTable (props) {
                     </TableHead>
 
 					<TableBody>
-						{assessmentData.isoShowAssessment.map((val , key) => (							
+						{assessmentData.isoShowAssessment
+						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+						.map((val , key) => (							
 									<TableRow
 										className="h-64 cursor-pointer"
 										hover
@@ -128,10 +140,11 @@ function ISOAssessmentsTable (props) {
 				</Table>
 			</FuseScrollbars>
 
-			{/* <TablePagination
+			<TablePagination
 				className="flex-shrink-0 border-t-1"
 				component="div"
-				count={data.length}
+				rowsPerPageOptions={[5 , 10 , 15]}
+				count={assessmentData.isoShowAssessment.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				backIconButtonProps={{
@@ -142,7 +155,7 @@ function ISOAssessmentsTable (props) {
 				}}
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
-			/> */}
+			/>
 		</div>
 	);
 }

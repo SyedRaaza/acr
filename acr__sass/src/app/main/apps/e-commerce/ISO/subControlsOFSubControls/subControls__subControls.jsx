@@ -76,7 +76,7 @@ const SubControlsOfSubControls = ({ISOSubcontrolsData__subcontrols}) => {
                     >
                         <div className="accordianSummary">
                             <p className="text-14">{val.display_id}</p>
-                            <p className="capitalize text-14 font-bold">{val.details}</p>
+                            <p className="capitalize text-14">{val.details}</p>
                             <p className="invisible">##########</p>
                         </div>
                     </AccordionSummary>

@@ -8,6 +8,7 @@ const CisMaturity = (props) => {
     useEffect(() => {
         dispatch(getCisMaturityData())
     },[])
+    
     return (
         <React.Fragment>
                 <ProductsTable />
