@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
-import {connect} from "react-redux";
 import { set } from 'date-fns';
 import history from '@history';
 import { isoSaveSingleAssessment } from "../../../../../store/redux/index";
@@ -24,10 +23,9 @@ function ISOAssessmentsTable (props) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [rowsPerPage , setRowsPerPage] = useState(5);
+	const [limit , setLimit] = useState(5)
 	const [page , setPage] = useState(0);
 	const [pageOffset , setPageOffset] = useState(0)
-	const [limit , setLimit] = useState(5)
-	const [previousPageOffset , setPreviousPageOffset] = useState()
     const assessmentData = useSelector(state => state.isoShowAssessmentReducer);
 
 	let paramsData = {
@@ -41,7 +39,6 @@ function ISOAssessmentsTable (props) {
 		}
 		else if(assessmentData.loading == false) {
 			setLoading(false)
-			setPageOffset(0)
 		}
 	},[assessmentData.loading])
 
@@ -53,27 +50,22 @@ function ISOAssessmentsTable (props) {
 		setPage(newPage);
 	};
 
-	const handleChangeRowsPerPage = event => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	};
 
 	const nextPage = () => {
-		let newPageOffset = pageOffset + 5
-		setPageOffset(newPageOffset)
-		console.log(pageOffset)
-		//dispatch(getISOAssessmentData(paramsData));
+		setPageOffset(pageOffset + 5)
+		setPage(page + 1)
 	}
 
 	const previousPage = () => {
 		setPageOffset(pageOffset - 5)
+		setPage(page - 1)
 	}
 
 	if (loading) {
 		return <FuseLoading />;
 	}
 
-	if (assessmentData.cisMatturityData === []) {
+	if (assessmentData.isoShowAssessment.data === []) {
 		return (
 			<FuseAnimate delay={100}>
 				<div className="flex flex-1 items-center justify-center h-full">
@@ -166,7 +158,6 @@ function ISOAssessmentsTable (props) {
 				className="flex-shrink-0 border-t-1"
 				component="div"
 				rowsPerPageOptions={[]}
-				//labelRowsPerPage=''
 				count={assessmentData.isoShowAssessment.count}
 				rowsPerPage={rowsPerPage}
 				page={page}
@@ -179,7 +170,6 @@ function ISOAssessmentsTable (props) {
 					onClick: nextPage
 				}}
 				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
 		</div>
 	);

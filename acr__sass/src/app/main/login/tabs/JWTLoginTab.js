@@ -16,6 +16,7 @@ import {Link} from 'react-router-dom';
 import { setUser } from '../../../store/redux/index';
 import history from '@history';
 import {getToken} from "app/services/backendAPI/APIConfigs";
+import {baseURLget} from '../../../../axiosConfig/baseURL';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -67,7 +68,7 @@ function JWTLoginTab({loginData , newUser}) {
 
 const Emaildata = data => {
 	return new Promise((resolve , reject) => {
-		axios.post('http://pligence-acr.com/tenant/domain/' , 
+		axios.post(baseURLget , 
 		{"email":data},
 		{
 			headers: {

@@ -33,10 +33,10 @@ const AssesmentInfoFormISO = ({changeTab , nextTab , handleEnableTabs , userData
   const [selectedDateFrom, setSelectedDateFrom] = useState(new Date('2014-08-18T21:11:54'));
   const ISOFormData = useSelector(state => state.isoSingleAssessmentReducer.isoAssessmentSingle);
   const [input , setInput] = useState({
-    name: "",
+    name: ISOFormData.period_from === undefined ? "" : ISOFormData.period_from,
     period_to: "2020-01-26",
     period_from: "2020-01-01",
-    departments: [],
+    departments: ISOFormData.period_from === undefined ? [] : ISOFormData.departments,
     owner_id: 1,
   });
   const handleChangeInput = event => {

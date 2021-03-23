@@ -1,10 +1,11 @@
-import React , {useState} from 'react';
+import React , {useState , useEffect} from 'react';
 import NistRadar from '../project/widgets/nistRadarChart';
 import NistIPDRR from '../project/widgets/nistIPDRR';
 import FuseLoading from '@fuse/core/FuseLoading';
 import {useSelector , useDispatch} from 'react-redux';
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import {Typography , FormControl , InputLabel , Select} from '@material-ui/core';
+import { Radar , Doughnut} from 'react-chartjs-2';
+import {Typography , FormControl , InputLabel , Select , Card} from '@material-ui/core';
 
 function ComplianceDashboardApp(props) {
 
@@ -12,10 +13,42 @@ function ComplianceDashboardApp(props) {
     const [loading , setLoading] = useState(false);
     const [select , setSelect] = useState();
 
+    //Temporary
+    
+
     const handleChangeSelect = (event) => {
 		setSelect(event.target.value)
 		//dispatch(updateISODashboardData({"assessment_id":event.target.value}))
 	};
+
+    //Temporary
+    const chartdata = {
+        //labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+        labels: ['Identify', 'Protect', 'Detect', 'Respond', 'Recover'],
+        datasets: [
+          {
+            label: 'My First dataset',
+            backgroundColor: ['#FF6384', '#36A2EB' , '#FFCE56', '#E7E9ED', '#36A2EB'],
+			hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56' , '#36A2EB' , '#FFCE56'],
+            borderColor: 'rgba(179,181,198,1)',
+            pointBackgroundColor: 'rgba(179,181,198,1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(179,181,198,1)',
+            data: [65, 59, 90, 81, 56]
+          },
+        //   {
+        //     label: 'My Second dataset',
+        //     backgroundColor: 'rgba(255,99,132,0.2)',
+        //     borderColor: 'rgba(255,99,132,1)',
+        //     pointBackgroundColor: 'rgba(255,99,132,1)',
+        //     pointBorderColor: '#fff',
+        //     pointHoverBackgroundColor: '#fff',
+        //     pointHoverBorderColor: 'rgba(255,99,132,1)',
+        //     data: [28, 48, 96, 27, 100]
+        //   }
+        ]
+      };
 
     // useEffect(() => {
 	// 	if(DashboardData.loading == true) {
@@ -84,14 +117,14 @@ function ComplianceDashboardApp(props) {
 					</div>
                     {/* Right Side */}
 					<div className="flex flex-wrap w-full md:w-320 pt-16 mx-16">
-						{/* <div className="w-full sm:w-1/2 md:w-full">
+						<div className="w-full sm:w-1/2 md:w-full">
 							<Card className="h-400 p-20">
                             <div className="flex items-center justify-between h-64 border-b-1">
                                 <Typography className="text-16">Control Scores</Typography>
                             </div>
-                                <Radar data={data} options={{"cutoutPercentage":75,"spanGaps":false,"legend":{"display":false},"maintainAspectRatio":false}}/>
+                                <Doughnut data={chartdata} options={{"cutoutPercentage":66,"spanGaps":false,"legend":{"display":false},"maintainAspectRatio":false}}/>
                             </Card>
-						</div> */}
+						</div>
 						{/* <div className="mb-32 w-full sm:w-1/2 md:w-full">
 							<div className="widget flex w-full">
                                 <ISOMandatoryClauseDoughnut chartData={DashboardData.isoDashboardData.chart_requirements} chartTitle={"ISO-27k Mandatory Clause"} cutOutPercentage={0} />

@@ -282,7 +282,6 @@ const ISOMandatory = (props) => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <ISOMandatorySubControls ISOMandatorySubcontrolsData={val.sub_requirements} />
-                                    <h1>Details</h1>
                                 </AccordionDetails>
                             </Accordion>
                             ))}

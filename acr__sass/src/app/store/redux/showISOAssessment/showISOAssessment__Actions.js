@@ -26,9 +26,8 @@ export const failureISOAssessmentData = data => {
 }
 
 export const getISOAssessmentData = data => {
-    alert(JSON.stringify(data))
     return (dispatch) => {
-        dispatch(requestISOAssessmentData);
+        dispatch(requestISOAssessmentData());
         axios.get(`/maturity/iso/assessment/?limit=${data.limit}&offset=${data.offSet}` )
         .then(res => {
             const resData = res.data.data;

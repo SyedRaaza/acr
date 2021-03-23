@@ -1,1 +1,1 @@
-export const baseURLget = "https://jsonplaceholder.typicode.com";
+export const baseURLget = "http://pligence-acr.com/tenant/domain/";
